@@ -18,7 +18,6 @@ from docopt import docopt, printable_usage
 from urllib.parse import quote_plus
 from requests import post, get
 from json import load as json_load
-from json import dumps as json_dumps
 from itertools import chain
 from collections import OrderedDict
 
@@ -219,7 +218,6 @@ def print_response (s, r):
 		print (msg)
 	except ValueError:
 		print ('\t   msg:\t%s' % d)
-		pass
 
 def main ():
 	args = docopt (__doc__)
