@@ -215,6 +215,8 @@ def print_response (s, r):
 					msg += ('\t\t{:>30}: {:<10} {} {} {}\n'.format(
 						k, v['assessment'], v['result'], 
 						v['detecttime'], v['alternativeid']))
+		else:
+			msg += d
 		print (msg)
 	except ValueError:
 		print ('\t   msg:\t%s' % d)
