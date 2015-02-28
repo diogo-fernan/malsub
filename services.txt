@@ -1,0 +1,47 @@
+{
+	"AVCaesar": {
+		"name": "avcaesar",
+		"urlb": "base URL for binaries",
+		"urlu": "base URL for URLs",
+		"apib": ["POST BIN API", "POST/GET BIN API"],
+		"apiu": null,
+		"key": ["apikey", ""],
+		"id": null
+	},
+	"maltracker": {
+		"name": "maltracker",
+		"urlb": "base URL for binaries",
+		"urlu": "base URL for URLs",
+		"apib": ["POST BIN API", "POST/GET BIN API"],
+		"apiu": ["POST/GET URL API", "POST/GET URL API"],
+		"key": ["apikey", ""],
+		"id": null
+	},
+	"malwr": {
+		"name": "malwr",
+		"urlb": "base URL for binaries",
+		"urlu": "base URL for URLs",
+		"apib": ["POST BIN API", "POST/GET BIN API"],
+		"apiu": null,
+		"key": ["api_key", ""],
+		"id" : "uuid"
+	},
+	"Metascan Online": {
+		"name": "metascan",
+		"urlb": "base URL for binaries",
+		"urlu": "base URL for URLs",
+		"apib": ["POST BIN API", "POST/GET BIN API"],
+		"apiu": ["POST/GET URL API", "POST/GET URL API"],
+		"key": ["apikey", ""],
+		"id": null
+	},
+	"VT": {
+		"name": "vt",
+		"urlb": "https://www.virustotal.com",
+		"urlu": "https://www.virustotal.com",
+		"apib": ["POST /vtapi/v2/file/scan", "POST /vtapi/v2/file/report"],
+		"apiu": ["POST /vtapi/v2/url/scan", "POST /vtapi/v2/url/report"],
+		"key": ["apikey", ""],
+		"id": "resource"
+	}
+}
