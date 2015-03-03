@@ -10,7 +10,7 @@ Options and commands:
   -c, --check  Check an analysis of a specific service.
   <services>  Service(s) delimited by a comma. [default: all]
 
-Required: services.txt in JSON
+Required: services.json in JSON
 """
 
 from sys import exit
@@ -91,9 +91,9 @@ class Service (object):
 
 def read ():
 	try: 
-		d = json_load (open ('services.txt'))
+		d = json_load (open ('services.json'))
 	except IOError as e:
-		raise_sysExit ('I/O ERROR: services.txt', e)
+		raise_sysExit ('I/O ERROR: services.json', e)
 	vec = []
 	fields = ['name', 'urlb', 'urlu', 'apib', 'apiu', 'key', 'id']
 	for k, v in d.items():
@@ -244,7 +244,7 @@ def main ():
 	else:
 		MODE = URL
 
-	# read services.txt
+	# read services.json
 	SERV = read ()
 	SERV = [s for s in SERV if s.api[MODE][OPT] is not None]
 
