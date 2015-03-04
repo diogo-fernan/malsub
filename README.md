@@ -2,7 +2,7 @@
 
 `malsub.py` is a Python 3.4.x script that submits a malware sample or a URL to multiple online services simultaneously via their RESTful APIs. It also allows to check the status of a specific analysis and pretty prints the results.
 
-`malsub` was written while having in mind the needs of security analysts who submit many samples on a regular basis. It is free for use by anyone interested or curious enough.
+`malsub` was written while having in mind the needs of security analysts who submit many samples on a regular basis.
 
 # Supported Services
 
