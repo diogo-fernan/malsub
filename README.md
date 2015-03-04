@@ -23,7 +23,7 @@ Both can be be installed via `pip`. Check the documentation of each module for m
 
 # Notes
 
-`malsub` requires a `services.txt` file in the same path of the script. The file contains metadata and API information of each service. It must be in JSON. For security reasons the provided file is only populated with [VirusTotal](https://www.virustotal.com/).
+`malsub` requires a `services.json` file in the same path of the script. The file contains metadata and API information of each service. It must be in JSON. For security reasons the provided file is only populated with [VirusTotal](https://www.virustotal.com/).
 
 Each service requires a valid API key in order to make authenticated requests. A registered account is required by each company in order to get one and to get a view of their API.
 
