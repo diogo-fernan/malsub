@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Usage: malsub [-h] (-s | -c) <services> (bin|url) <INPUT>
+"""Usage: python malsub.py [-h] (-s | -c) <services> (bin|url) <INPUT>
 
 Query a malware analysis service for an analysis or a report.
 
@@ -11,6 +11,8 @@ Options and commands:
   <services>  Service(s) delimited by a comma. [default: all]
 
 Required: services.json in JSON
+
+Copyright (c) 2015 Diogo Fernandes.
 """
 
 from sys import exit
@@ -271,4 +273,4 @@ def main ():
 if __name__ == "__main__":
 	exit(main ())
 else:
-	print ("malsub.py should not be imported to other module(s)")
+	print ("malsub.py should not be imported into other module(s)")
