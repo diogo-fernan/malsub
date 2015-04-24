@@ -7,16 +7,16 @@
 # Supported Services
 
 Currently the following services are supported:
-* [AVCaesar](https://avcaesar.malware.lu/)
-* [maltracker](https://maltracker.net/)
-* [Malwr](https://malwr.com/)
-* [Metascan Online](https://www.metascan-online.com/)
-* [VirusTotal](https://www.virustotal.com/)
+* [AVCaesar](https://avcaesar.malware.lu/);
+* [maltracker](https://maltracker.net/);
+* [Malwr](https://malwr.com/);
+* [Metascan Online](https://www.metascan-online.com/); and
+* [VirusTotal](https://www.virustotal.com/).
 
 # Dependencies
 
 malsub.py requires the following Python modules to be installed:
-*  [`docopt`](https://github.com/docopt/docopt)
+*  [`docopt`](https://github.com/docopt/docopt); and
 *  [`requests`](http://docs.python-requests.org/)
 
 Both can be be installed via `pip`. Check the documentation of each module for more information.
