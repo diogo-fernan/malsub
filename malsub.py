@@ -12,7 +12,7 @@ Options and commands:
 
 Required: services.json in JSON
 
-Copyright (c) 2015 Diogo Fernandes.
+Copyright (c) 2015 Diogo A. B. Fernandes.
 """
 
 from sys import exit
