@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+"""
+@author:	Diogo A. B. Fernandes
+@contact:	diogoabfernandes@gmail.com
+@license:	see LICENSE
+"""
+
 """Usage: python malsub.py [-h] (-s | -c) <services> (bin|url) <INPUT>
 
 Query a malware analysis service for an analysis or a report.
