@@ -1,0 +1,51 @@
+
+--- # malsub API keys
+
+# Service:
+#    apikey: fixed entry denoting that what follows is the API key pair of the
+#               term and the key itself
+#    user: optional entry of the user pair
+#        term: user
+
+AVCaesar:
+    apikey:
+        apikey: <apikey>
+deepviz:
+    apikey:
+        api_key: <apikey>
+HybridAnalysis:
+    apikey:
+        apikey: <apikey>
+    user:
+        secret: <apiuser>
+MalShare:
+    apikey:
+        api_key: <apikey>
+maltracker:
+    apikey:
+        apikey: <apikey>
+Malwr:
+    apikey:
+        api_key: <apikey>
+Metadefender:
+    apikey:
+        apikey: <apikey>
+PhishTank:
+    apikey:
+        app_key: <apikey>
+QuickSand:
+    apikey:
+        key: <apikey>
+SafeBrowsing:
+    apikey:
+        key: <apikey>
+URLVoid:
+    apikey:
+        apikey: <apikey>
+    user:
+        identifier: <apiuser>
+VirusTotal:
+    apikey:
+        apikey: <apikey>
+
+... # end of API keys
