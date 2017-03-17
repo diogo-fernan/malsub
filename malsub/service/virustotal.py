@@ -11,7 +11,7 @@ class VirusTotal(Service):
     sname = "vt"
     api_keyl = 64
 
-    api_dowf = APISpec()
+    api_dowf = APISpec("GET", "https://www.virustotal.com", "/vtapi/v2/file/download")
     api_repf = APISpec("POST", "https://www.virustotal.com", "/vtapi/v2/file/report")
     api_subf = APISpec("POST", "https://www.virustotal.com", "/vtapi/v2/file/scan")
 
@@ -28,9 +28,20 @@ class VirusTotal(Service):
     # https://www.virustotal.com/en/documentation/public-api/
     # https://www.virustotal.com/en/documentation/private-api/
 
-    @Service.unsupported
+    
     def download_file(self, hash: Hash):
-        pass
+        self.api_dowf.param = {**self.get_apikey(), "hash": hash.hash}
+        from requests.exceptions import HTTPError
+        try:
+            data, filename = request(self.api_dowf, bin=True)
+        except HTTPError as e:
+            if e.response.status_code == 404:
+                return f"sample \"{hash.hash}\" not found"
+            raise HTTPError(e)
+        if not filename:
+            filename = hash.hash        
+        rw.writef(filename, data)
+        return f"downloaded \"{filename}\""
 
     def report_file(self, hash: Hash):
         self.api_repf.data = {**self.get_apikey(), "resource": hash.hash}
