@@ -9,7 +9,7 @@ from malsub.service import base
 __maxt = cpu_count()
 
 
-def exec(anserv, fn, kwargs):
+def exec(anserv, fn, kwarg):
     anserv.setfn(fn)
     fn = [s for s in anserv if not s.fnhasattr(base.UNSUPPORTED)]
     # fn = {n: getattr(s(), fn) for n, s in anserv.items() if
@@ -21,7 +21,7 @@ def exec(anserv, fn, kwargs):
     if fn:
         with ThreadPoolExecutor(__maxt) as tp:
             # fut = {tp.submit(f, **kwarg[n], **kwargs): n for n, f in fn.items()}
-            fut = {tp.submit(s.fn, **kwargs): s for s in fn}
+            fut = {tp.submit(s.fn, **kwarg): s for s in fn}
             # timeout=60 (sec) # does not work like this
             for f in as_completed(fut, timeout=None):
                 try:

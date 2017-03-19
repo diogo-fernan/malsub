@@ -22,7 +22,8 @@ The following publicly available services are currently included in *malsub*:
 * [Safe Browsing](https://developers.google.com/safe-browsing/);
 * [Threat Crowd](https://www.threatcrowd.org/);
 * [URLVoid](http://www.urlvoid.com/);
-* [VirusTotal](https://www.virustotal.com/).
+* [VirusTotal](https://www.virustotal.com/);
+* [VxStream](https://www.vxstream-sandbox.com/).
 
 Most of these services require API keys that are generated after registering an account in their respective websites, which need to be specified in the `apikey.yaml` file according to the given structure. Note that some of the already bundled services are limited in supported operations due to the fact that they were developed with free API keys. API keys associated with paid subscriptions are allowed to make additional calls not open to the public and may not be restricted by a given quota. Yet, *malsub* can process multiple input arguments and pause between requests as a workaround for cooldown periods.
 
@@ -30,7 +31,7 @@ The main goal of *malsub* is to serve as a one-stop-shop for querying multiple o
 
 # Dependencies and Usage
 
-*malsub* requires a few moduels that are specified in `requirements.txt`. The framework is structured into a package and sub packages. Its folder structure and some key files to be taken into consideration when using it or developing additional service models are described as follows:
+*malsub* requires a few modules that are specified in `requirements.txt`. The framework is structured into a package and sub packages. Its folder structure and some key files to be taken into consideration when using it or developing additional service models are described as follows:
 
 * `malsub/malsub.py`: application entry point;
 * `malsub/data`: miscellaneous data folder;
@@ -49,7 +50,7 @@ The main goal of *malsub* is to serve as a one-stop-shop for querying multiple o
 The supported options are the following:
 
 ```
-Usage: malsub [-h] [-a <service>] (-d | -f | -q | -r | -s | -t) [-i | -o | -l | -u] [-p <seconds>] [-v ...] [<input> ...]
+Usage: malsub [-h] [-a <service>] (-d | -f | -q | -r | -s | -t) [-i | -o | -l | -u] [-p <num>] [-R] [-v ...] [<input> ...]
 
 Interact with online malware and phishing analysis services for malware samples, domain names, IP addresses or URLs.
 
@@ -57,14 +58,15 @@ Options:
   -h, --help  show this help message and exit
 
   -a, --analysis <service>  character-separated list of services (class or short names) [default: all]
-  -p, --pause <seconds>     wait an interval between service requests (rate limit) [default: 0]
+  -p, --pause <num>         wait an interval in seconds between service requests (rate limit) [default: 0]
+  -R, --recursive           recurse on input paths
   -v, --verbose             display verbose and debug messages
 
 API functions:
   -d, --download  download files or malware samples
   -f, --find      search for arbitrary terms (input format irrelevant)
   -q, --quota     retrieve API user quota
-  -r, --report    retrieve submission reports for domains, hash values, IP addresses or URLs
+  -r, --report    retrieve submission reports for domains, files, hash values, IP addresses or URLs
   -s, --submit    submit malware samples or URLs for analysis
   -t, --test      test API calls by calling each service function as defined with some default values
 
@@ -95,6 +97,12 @@ $ python3 malsub.py -vva vt -su <url>
 
 ```
 $ python3 malsub.py -a mt,qs,vt -p 60 -s <file1> <file2>
+```
+
+* Retrieve reports for a file, for files under a recursive path and for a hash value:
+
+```
+$ python3 malsub.py -a vs,vt -rRv <file> <path> <hash>
 ```
 
 * Retrieve analysis reports of a domain from all available services:
@@ -185,7 +193,6 @@ class VirusTotal(Service):
 * Documentation;
 * Refine error handling and data display of API responses, namely the summarization of multiple requests;
 * Extend supported API functions;
-* Implement a recursive option for input files;
 * Implement additional API services as modules;
 * Add an option to provide a description of each service available and its API functions;
 * Develop an interactive command-line interface;
@@ -193,4 +200,5 @@ class VirusTotal(Service):
 
 # Change History
 
+* *malsub* **20170319**: made generic improvements, added files as input for report retrieval, added a recurse option and added VxStream (private version of Hybrid Analysis) as a service module.
 * *malsub* **20170305**: first major release.

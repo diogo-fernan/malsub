@@ -109,5 +109,4 @@ def error(m):
     prints a red-colored error message and exits
     """
     msg(m, log.excl, log.error, color.red, color.redb, file=stdout, trail="")
-    # print("\n" + printable_usage(__doc__))
     exit(1)

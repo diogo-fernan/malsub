@@ -55,10 +55,11 @@ def run(arg):
         try:
             pause = int(arg["--pause"])
             if int(pause) < 0:
-                pause = 0
+                raise ValueError
         except ValueError:
             out.warn(f"invalid pause interval integer value \"{pause}\", "
                      f"defaulting to zero")
+            pause = 0
 
         if arg["--test"]:
             ina = base.Service.get_apifn()
@@ -84,11 +85,27 @@ def run(arg):
                     out.error("all input URLs are invalid")
             # file, hash
             else:
+                from glob import glob
+                from os.path import isdir, isfile, normpath
+
+                if arg["--recursive"]:
+                    tmp = [f for f in arg["<input>"] if isfile(f)]
+                    for f in [normpath(f) for f in arg["<input>"] if isdir(f)]:
+                        tmp += [f for f in
+                                glob(f + meta.SEP + "**", recursive=True) if
+                                isfile(f)]
+                    tmp += [h for h in arg["<input>"] if
+                            not isfile(h) and not isdir(h)]
+                    arg["<input>"] = tmp
+
                 if arg["--submit"]:
                     ina = file.new(*arg["<input>"])
-                elif arg["--report"]:
-                    # ina = arg["<input>"]
-                    ina = crypto.parse_hashl(*arg["<input>"])
+                elif arg["--report"]:  # file, hash
+                    ina = [f for f in arg["<input>"] if not isfile(f)]
+                    tmp = [f for f in arg["<input>"] if isfile(f)]
+                    if rw.validff(tmp):  # file
+                        ina += [crypto.sha256(f) for f in tmp]
+                    ina = crypto.parse_hashl(*ina)  # hash
                 else:  # arg["--download"]
                     if arg["<input>"]:
                         ina = crypto.parse_hashl(*arg["<input>"])
@@ -96,13 +113,13 @@ def run(arg):
                         ina = __NOINPUT
         out.debug("ina", obj=ina)
 
-        if ina != __NOINPUT and not arg["--test"] and len(ina) != len(
-                arg["<input>"]):
+        if ina != __NOINPUT and \
+                not arg["--test"] and len(ina) != len(arg["<input>"]):
             rw.yn("one or more input arguments are invalid")
 
     if arg["--verbose"] == 1:
         out.LEVEL = out.log.verb
-    if arg["--verbose"] > 1:
+    elif arg["--verbose"] > 1:
         out.LEVEL = out.log.debug
     out.debug("arg", obj=arg)
 

@@ -29,7 +29,6 @@ class AVCaesar(Service):
     def download_file(self, hash: Hash):
         self.api_dowf.fulluri = self.api_dowf.fullurl % hash.hash
         self.api_dowf.cookie = self.get_apikey()
-        print(self.api_dowf.cookie)
         data, filename = request(self.api_dowf, bin=True)
         # out.debug(util.hexdump(data))
         if filename:

@@ -2,9 +2,19 @@ from malsub.common import out
 from malsub.core.meta import DOWNL_PATH
 
 
+def validff(file):
+    for f in file:
+        try:
+            with open(f, mode='rb') as fd:
+                out.debug(f"file \"{f}\" valid")
+        except:
+            return False
+    return True
+
+
 def tryf(file):
     try:
-        with open(file, 'rb') as fd:
+        with open(file, mode='rb') as fd:
             out.debug(f"file \"{file}\" valid")
     except:
         out.error(f"cannot open file \"{file}\"")
@@ -13,7 +23,7 @@ def tryf(file):
 
 def openf(file, mode='rb', debug=True):
     try:
-        fd = open(file, mode)
+        fd = open(file, mode=mode)
         if debug:
             out.debug(f"file \"{file}\" valid")
         return fd

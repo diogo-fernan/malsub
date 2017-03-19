@@ -6,6 +6,8 @@ from malsub.core.crypto import md5, sha256
 
 class File():
     def __init__(self, file):
+        # test for compression
+
         self.name = path.basename(file)
         self.pname = file
         self.fdl = []
@@ -13,7 +15,7 @@ class File():
         self.len = stat(file).st_size
         self.md5 = md5(file)
         self.sha256 = sha256(file)
-        # self.type = [pe, pdf, ...]
+        # self.type = [pe, pdf, apk, ...]
 
     def fd(self):
         fd = openf(self.pname)

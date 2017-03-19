@@ -5,15 +5,20 @@ from malsub.common import rw, regex
 
 __buf = 2 ** 16  # 65536
 
+HASH_MD5 = "md5"
+HASH_SHA1 = "sha1"
+HASH_SHA256 = "sha256"
+HASH_SHA512 = "sha512"
+
 __md5 = 128
 __sha1 = 160
 __sha256 = 256
 __sha512 = 512
 
-__hash = {__md5: "md5",
-          __sha1: "sha1",
-          __sha256: "sha256",
-          __sha512: "sha512"}
+__hash = {__md5: HASH_MD5,
+          __sha1: HASH_SHA1,
+          __sha256: HASH_SHA256,
+          __sha512: HASH_SHA512}
 
 
 class Hash:
@@ -34,7 +39,7 @@ def ishash(string):
 
 
 def hashalg(string):
-    return __hash[len(string) / 2 * 8]  # if ishash(string) else "unknown"
+    return __hash.get(len(string) / 2 * 8)  # if ishash(string) else "unknown"
 
 
 def parse_hashl(*hash):
@@ -58,9 +63,9 @@ def hashf(alg, file):
     return hex
 
 
-def md5(files):
-    return hashf("md5", files)
+def md5(file):
+    return hashf("md5", file)
 
 
-def sha256(files):
-    return hashf("sha256", files)
+def sha256(file):
+    return hashf("sha256", file)

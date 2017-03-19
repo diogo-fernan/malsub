@@ -1,7 +1,7 @@
 from malsub.service.base import APISpec, Service
 from malsub.core.crypto import Hash
 from malsub.core.file import File
-from malsub.core.web import request, openurl
+from malsub.core.web import request
 from malsub.common import out, frmt
 
 
@@ -12,7 +12,7 @@ class Malwr(Service):
     api_keyl = 32
 
     api_dowf = APISpec()
-    api_repf = APISpec("POST", "https://malwr.com", "/api/analysis/status")
+    api_repf = APISpec()
     api_subf = APISpec("POST", "https://malwr.com", "/api/analysis/add")
 
     api_repa = APISpec()
@@ -26,7 +26,7 @@ class Malwr(Service):
     api_quot = APISpec()
 
     # https://malwr.com/
-    # waiting to come back from maintenance
+    # https://www.malwareviz.com/
 
     @Service.unsupported
     def download_file(self, hash: Hash):
@@ -36,10 +36,13 @@ class Malwr(Service):
     def report_file(self, hash: Hash):
         pass
 
-    @Service.unsupported
     def submit_file(self, file: File):
-        # https://www.malwareviz.com/
-        pass
+        # HTTP 405 Method Not Allowed
+        self.api_subf.data = {**self.get_apikey(), "shared": "yes"}
+        self.api_subf.file = {"file": (file.name, file.fd())}
+        data, _ = request(self.api_subf)
+        data = frmt.jsontree(data)
+        return out.pformat(data)
 
     @Service.unsupported
     def report_app(self, hash: Hash):

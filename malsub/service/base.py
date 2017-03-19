@@ -142,9 +142,11 @@ class Service(metaclass=MetaMix):
         cls.__apikey = APIKey(**apikey)
 
     @classmethod
-    def get_apikey(cls, key=False):
+    def get_apikey(cls, key=False, user=False):
         if cls.__apikey:
-            if key:
+            if key and user:
+                return cls.__apikey.key, cls.__apikey.user
+            elif key:
                 return cls.__apikey.key
             return cls.__apikey.apikey
         return {}
@@ -234,16 +236,18 @@ class APISpec:
                 if type(cert) is str and rw.tryf(DATA_PATH + cert) else True
         else:
             self.verify = False if cert == False else True
-        self.header = None
+        self.auth = None
         self.cookie = None
         self.data = None
-        self.json = None
         self.file = None
+        self.header = None
+        self.json = None
         self.param = None
 
     def __str__(self):
-        return f"{self.method} {self.fulluri} {self.verify} {self.header} " \
-               f"{self.cookie} {self.param} {self.data} {self.file}"
+        return f"{self.method} {self.fulluri} {self.verify} \n" \
+               f"{self.auth} {self.cookie} {self.data} {self.file} {self.header} " \
+               f"{self.param}"
 
 
 UNUSED = "_unused"

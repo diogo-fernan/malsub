@@ -1,4 +1,5 @@
 from requests import get as requests_get, post as requests_post
+# from requests.auth import HTTPBasicAuth
 from urllib.parse import quote_plus, urlencode
 
 from malsub.common import out, regex
@@ -14,29 +15,28 @@ __header = {'Accept': '*/*',
             'User-Agent': f"{meta.MALSUB_NAME} {meta.MALSUB_URL}",
             'Connection': 'close'}
 
-__http_nocontent = 204
+
+# class NoContentException(Exception):
+#     def __init__(self):
+#         self.msg = "HTTP 20x without content"
+#         super(NoContentException, self).__init__(self.msg)
 
 
-class NoContentException(Exception):
-    def __init__(self):
-        self.msg = "HTTP response code is 204 or server returned no content"
-        super(NoContentException, self).__init__(self.msg)
-
-
-def _request(fn, uri, header=None, cookie=None, data=None, json=None, file=None,
-             param=None, verify=True, bin=False):
+def _request(fn, uri, auth=None, cookie=None, data=None, file=None, header=None,
+             json_req=None, param=None, verify=True, bin=False, json=False):
     if header and type(header) is dict:
         header.update(__header)
     else:
         header = __header
     # try:
     res = fn(uri,
+             auth=auth,  # HTTPBasicAuth
              cookies=cookie,
              data=data,
-             json=json,
              files=file,
-             params=param,
              headers=header,  # {**header, **__header},
+             json=json_req,
+             params=param,
              verify=verify,
              timeout=__timeout,
              stream=False)
@@ -56,40 +56,42 @@ def _request(fn, uri, header=None, cookie=None, data=None, json=None, file=None,
     # 	# out.warn(f"too many HTTP redirects to \"{uri}\": {e}")
     # 	raise TooManyRedirects(e)
     # else:
-    out.debug(f"successfull HTTP response from \"{uri}\": "
-              f"{res.status_code} \"{res.reason}\"")
-    if res.status_code == __http_nocontent or res.headers.get(
-            "Content-Length") == 0:
-        raise NoContentException
+    out.debug(f"HTTP {res.status_code} \"{res.reason}\""
+              f" -- \"{uri}\"")
+
+    if res.status_code == 204 or res.headers.get("Content-Length") == 0:
+        raise Exception(f"HTTP {res.status_code} \"{res.reason}\""
+                        f" -- \"{uri}\": no content")
 
     filename = regex.http_filename(res.headers.get("Content-Disposition"))
     if bin:
         return res.content, filename
+    if json:
+        return res.json(), filename
     return res.text, filename
 
 
-def post(uri, header=None, cookie=None, data=None, json=None, file=None,
-         param=None, verify=True, bin=False):
-    return _request(requests_post, uri, header, cookie, data, json, file, param,
-                    verify, bin)
+def post(uri, auth=None, cookie=None, data=None, file=None, header=None,
+         json_req=None, param=None, verify=True, bin=False, json=False):
+    return _request(requests_post, uri, auth, cookie, data, file, header,
+                    json_req, param, verify, bin, json)
 
 
-def get(uri, header=None, cookie=None, data=None, json=None, file=None,
-        param=None, verify=True, bin=False):
-    return _request(requests_get, uri, header, cookie, data, json, file, param,
-                    verify, bin)
+def get(uri, auth=None, cookie=None, data=None, file=None, header=None,
+        json_req=None, param=None, verify=True, bin=False, json=False):
+    return _request(requests_get, uri, auth, cookie, data, file, header,
+                    json_req, param, verify, bin, json)
 
 
-def request(apispec, bin=False):
+def request(apispec, bin=False, json=False):
     if apispec.method == POST:
         fn = post
     else:  # apisec.method == GET:
         fn = get
     return fn(apispec.fulluri,
-              apispec.header, apispec.cookie,
-              apispec.data, apispec.json, apispec.file,
-              apispec.param,
-              apispec.verify, bin)
+              apispec.auth, apispec.cookie, apispec.data, apispec.file,
+              apispec.header, apispec.json, apispec.param,
+              apispec.verify, bin, json)
 
 
 def test(apispec):
@@ -98,12 +100,17 @@ def test(apispec):
     else:
         fn = requests_get
     # try:
+    if apispec.header and type(apispec.header) is dict:
+        apispec.header.update(__header)
+    else:
+        apispec.header = __header
     res = fn(apispec.fulluri,
+             auth=apispec.auth,
              cookies=apispec.cookie,
              data=apispec.data,
+             headers=apispec.header,  # {**apispec.header, **__header},
              json=apispec.json,
              params=apispec.param,
-             headers={**apispec.header, **__header},
              verify=apispec.verify,
              timeout=__timeout,
              stream=False)

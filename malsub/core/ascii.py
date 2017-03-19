@@ -40,8 +40,9 @@ _default = [f"\n{_hline}\n  {util.asciibin(meta.MALSUB_NAME)}\n",
 def banner():
     if "pyfiglet" in modules:
         f = Figlet().getFonts()
-        print(color.cyanb("\n" + figlet_format(meta.MALSUB_NAME, font=f[
-            util.randint(0, len(f))]).rstrip() +
+        print(color.cyanb("\n" +
+                          figlet_format(meta.MALSUB_NAME, font=f[
+                              util.randint(0, len(f))]).rstrip() +
                           f"\n\n   {meta.MALSUB_NAME} {meta.MALSUB_VERSION}\n"
                           f"   {meta.MALSUB_URL}\n"))
     else:

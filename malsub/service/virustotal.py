@@ -35,7 +35,7 @@ class VirusTotal(Service):
     def report_file(self, hash: Hash):
         self.api_repf.data = {**self.get_apikey(), "resource": hash.hash}
         data, _ = request(self.api_repf)
-        # data = frmt.jsontree(data, depth=1)
+        data = frmt.jsontree(data, depth=1)
         # data = frmt.jsonvert(data["scans"])
         # openurl(data["permalink"])
         return out.pformat(data)
