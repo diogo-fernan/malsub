@@ -10,6 +10,11 @@ class ThreatCrowd(Service):
     sname = "tc"
     api_keyl = 32
 
+    desc = f"{name} is an open-source threat intelligence for malware maintained\n" \
+           f"by AlienVault"
+    subs = "public"
+    url = "https://www.threatcrowd.org/"
+
     api_dowf = APISpec()
     api_repf = APISpec()
     api_subf = APISpec()

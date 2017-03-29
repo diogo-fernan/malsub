@@ -1,7 +1,7 @@
 from os.path import sep as SEP
 
 MALSUB_NAME = "malsub"
-MALSUB_VERSION = "v1.1"
+MALSUB_VERSION = "v1.2"
 MALSUB_URL = "https://github.com/diogo-fernan/malsub"
 
 DATA_PATH = "data" + SEP

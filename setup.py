@@ -7,7 +7,7 @@ setup(
     author_email="diogoabfernandes@gmail.com",
     description="A Python RESTful API framework for online malware and URL analysis services.",
     name="malsub",
-    version="1.1",
+    version="1.2",
     license="see LICENSE",
     packages=find_packages(),
     scripts=["malsub"],

@@ -10,6 +10,12 @@ class Maltracker(Service):
     sname = "mt"
     api_keyl = 64
 
+    desc = f"{name} is a proprietary sanboxed environment created by\n" \
+           f"AnubisNetworks for dynamic analysis incorporating threat\n" \
+           f"intelligence"
+    subs = "public"
+    url = "https://maltracker.net/"
+
     api_dowf = APISpec("GET", "http://api.maltracker.net:4700", "/sample/get/")
     # /report/min/get/ # /sample/info/
     api_repf = APISpec("GET", "http://api.maltracker.net:4700", "/report/get/")

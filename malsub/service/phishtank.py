@@ -10,6 +10,10 @@ class PhishTank(Service):
     sname = "pt"
     api_keyl = 64
 
+    desc = f"{name} is a community-based phishing database"
+    subs = "public"
+    url = "https://www.phishtank.com/"
+
     api_dowf = APISpec("GET", "http://data.phishtank.com", "/data/%s/online-valid.json.gz")
     api_repf = APISpec()
     api_subf = APISpec()

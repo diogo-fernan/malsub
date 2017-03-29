@@ -11,6 +11,14 @@ class VirusTotal(Service):
     sname = "vt"
     api_keyl = 64
 
+    desc = f"{name} is a well-known online repository by Google of malware and\n" \
+           f"malicious URLs with on-demand scanning features using a number of\n" \
+           f"selected antivirus engines"
+    subs = "public/private"
+    # frmt = "closed"
+    url = "https://www.virustotal.com"
+
+
     api_dowf = APISpec("GET", "https://www.virustotal.com", "/vtapi/v2/file/download")
     api_repf = APISpec("POST", "https://www.virustotal.com", "/vtapi/v2/file/report")
     api_subf = APISpec("POST", "https://www.virustotal.com", "/vtapi/v2/file/scan")

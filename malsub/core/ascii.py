@@ -1,7 +1,7 @@
 from sys import modules
 
-from malsub.common import out, util
-from malsub.core import color, meta
+from malsub.common import color, out, util
+from malsub.core import meta
 
 try:
     from pyfiglet import figlet_format, Figlet

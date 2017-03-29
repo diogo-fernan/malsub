@@ -11,6 +11,11 @@ class SafeBrowsing(Service):
     sname = "sb"
     api_keyl = 39
 
+    desc = f"{name} is an online database of malicious URLs updated in real-time\n" \
+           f"by Google"
+    subs = "public"
+    url = "https://safebrowsing.google.com/"
+
     api_dowf = APISpec()
     api_repf = APISpec()
     api_subf = APISpec()

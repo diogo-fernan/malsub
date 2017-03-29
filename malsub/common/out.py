@@ -1,7 +1,7 @@
-from sys import stdout, stderr
 from pprint import PrettyPrinter
+from sys import stdout
 
-from malsub.core import color
+from malsub.common import color
 
 
 class log:

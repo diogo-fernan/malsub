@@ -10,6 +10,12 @@ class VxStream(Service):
     sname = "vs"
     api_keyl = 25
 
+    desc = f"{name} features in-depth static and dynamic analysis techniques\n" \
+           f"within sanboxed environments and is a malware repository created by\n" \
+           f"Payload Security"
+    subs = "private"
+    url = "https://www.vxstream-sandbox.com/"
+
     api_stat = APISpec("GET", "https://demo12.vxstream-sandbox.com", "/api/state/%s")
 
     api_dowf = APISpec()

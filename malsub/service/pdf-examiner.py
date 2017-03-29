@@ -10,6 +10,11 @@ class PDFExaminer(Service):
     sname = "pe"
     api_keyl = 32
 
+    desc = f"{name} is an in-depth, automated PDF analysis service with\n" \
+           f"obfuscation, encryption and stream analysis and exploit detection"
+    subs = "public/private"
+    url = "https://www.pdfexaminer.com/"
+
     api_dowf = APISpec()
     api_repf = APISpec("POST", "https://www.pdfexaminer.com", "/pdfapirep.php")
     api_subf = APISpec("POST", "https://www.pdfexaminer.com", "/pdfapi.php")

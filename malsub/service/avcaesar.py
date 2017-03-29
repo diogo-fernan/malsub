@@ -10,9 +10,15 @@ class AVCaesar(Service):
     sname = "avc"
     api_keyl = 64
 
+    desc = f"{name} is an online sandbox and malware repository developed under\n" \
+           f"a project from European Comission and maintained by a CERT in\n" \
+           f"Luxembourg"
+    subs = "public"
+    url = "https://avcaesar.malware.lu/"
+
     api_dowf = APISpec("GET", "https://avcaesar.malware.lu", "/api/v1/sample/%s/download")
     api_repf = APISpec("GET", "https://avcaesar.malware.lu", "/api/v1/sample/")
-    api_subf = APISpec("POST", "https://avcaesar.malware.lu", "/api/v1/upload")
+    api_subf = APISpec("POST", "https://avcaesar.malware.lu", "/api/v1/sample/upload")
 
     api_repa = APISpec()
     api_repi = APISpec()
@@ -45,13 +51,11 @@ class AVCaesar(Service):
         data = frmt.jsontree(data)
         return out.pformat(data)
 
-    @Service.unsupported
     def submit_file(self, file: File):
-        # HTTP 404 Not Found
         self.api_subf.cookie = self.get_apikey()
         self.api_subf.file = {"file": file.fd()}
         data, _ = request(self.api_subf)
-        data = frmt.jsonvert(data)
+        data = frmt.jsontree(data)
         return out.pformat(data)
 
     @Service.unsupported

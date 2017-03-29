@@ -40,7 +40,7 @@ The main goal of *malsub* is to serve as a one-stop-shop for querying multiple o
 * `malsub/malsub/`: *malsub* package;
 * `malsub/malsub/common/`: modules that have a common use all throughout;
     * `out.py`: module with output displaying functions according to specific formats and log level (debug, verbose, informational or error);
-    * `frmt.py`: module with pretty display functions like dictionary to JSON and tabular formats; 
+    * `frmt.py`: module with pretty display functions like dictionary to JSON and tabular formats;
     * `rw.py`: module with read and write functions;
 * `malsub/malsub/core/`: core modules of the application;
     * `web.py`: module responsible for handling HTTP requests;
@@ -50,7 +50,10 @@ The main goal of *malsub* is to serve as a one-stop-shop for querying multiple o
 The supported options are the following:
 
 ```
-Usage: malsub [-h] [-a <service>] (-d | -f | -q | -r | -s | -t) [-i | -o | -l | -u] [-p <num>] [-R] [-v ...] [<input> ...]
+Usage: malsub [-h] [-a <service>] [-H] [-p <num>] [-R] [-v ...]
+              [-d | -f | -q | -r | -s | -t]
+              [-i | -o | -l | -u]
+              [<input> ...]
 
 Interact with online malware and phishing analysis services for malware samples, domain names, IP addresses or URLs.
 
@@ -58,9 +61,10 @@ Options:
   -h, --help  show this help message and exit
 
   -a, --analysis <service>  character-separated list of services (class or short names) [default: all]
-  -p, --pause <num>         wait an interval in seconds between service requests (rate limit) [default: 0]
-  -R, --recursive           recurse on input paths
-  -v, --verbose             display verbose and debug messages
+  -H, --servhelp     show help messages about selected services and exit
+  -p, --pause <num>  wait an interval in seconds between service requests (rate limit) [default: 0]
+  -R, --recursive    recurse on input paths
+  -v, --verbose      display verbose and debug messages
 
 API functions:
   -d, --download  download files or malware samples
@@ -90,19 +94,19 @@ $ python3 malsub.py -a avc,ha -q -v
 * Submit an URL for analysis to VirusTotal and output verbose and debug messages:
 
 ```
-$ python3 malsub.py -vva vt -su <url>
+$ python3 malsub.py -vva VirusTotal -su <url>
 ```
 
 * Submit two files to maltracker, QuickSand and VirusTotal and pause 60 seconds between submissions:
 
 ```
-$ python3 malsub.py -a mt,qs,vt -p 60 -s <file1> <file2>
+$ python3 malsub.py -a mt,qs,virustotal -p 60 -s <file1> <file2>
 ```
 
 * Retrieve reports for a file, for files under a recursive path and for a hash value:
 
 ```
-$ python3 malsub.py -a vs,vt -rRv <file> <path> <hash>
+$ python3 malsub.py -a VxStream,vt -rRv <file> <path> <hash>
 ```
 
 * Retrieve analysis reports of a domain from all available services:
@@ -159,7 +163,7 @@ class VirusTotal(Service):
 
     # API specification to download a file or a sample
     api_dowf = APISpec()
-    # API specification to retrieve a file report 
+    # API specification to retrieve a file report
     api_repf = APISpec("POST", "https://www.virustotal.com", "/vtapi/v2/file/report")
     # ... (other API functions specifications)
 
@@ -194,11 +198,15 @@ class VirusTotal(Service):
 * Refine error handling and data display of API responses, namely the summarization of multiple requests;
 * Extend supported API functions;
 * Implement additional API services as modules;
-* Add an option to provide a description of each service available and its API functions;
 * Develop an interactive command-line interface;
 * Integrate with other frameworks like [Cuckoo](http://www.cuckoosandbox.org/) and [Viper](https://github.com/viper-framework/viper).
 
 # Change History
 
+* *malsub* **20170329**: added `-H` to output help information about services, fixed AVCaesar, modified URLVoid and made other improvements.
 * *malsub* **20170319**: made generic improvements, added files as input for report retrieval, added a recurse option and added VxStream (private version of Hybrid Analysis) as a service module.
 * *malsub* **20170305**: first major release.
+
+# Acknowledgments
+
+Thanks to Payload Security for kindly providing access to VxStream.

@@ -10,6 +10,10 @@ class MalShare(Service):
     sname = "ms"
     api_keyl = 64
 
+    desc = f"{name} is a community-driven malware repository"
+    subs = "public"
+    url = "http://malshare.com/"
+
     # api_dowf = APISpec("GET", "https://malshare.com", "/api.php", "malshare-bundle.pem")
     api_dowf = APISpec("GET", "https://malshare.com", "/api.php", cert=False)
     api_repf = APISpec("GET", "https://malshare.com", "/api.php", cert=False)
@@ -33,7 +37,7 @@ class MalShare(Service):
         data, filename = request(self.api_dowf, bin=True)
         # out.debug(util.hexdump(data))
         if data.startswith(b"Sample not found by hash"):
-            return f"sample \"{hash.hash}\" not found"
+            return f"sample \"{hash}\" not found"
         if not filename:
             filename = hash.hash
         rw.writef(filename, data)

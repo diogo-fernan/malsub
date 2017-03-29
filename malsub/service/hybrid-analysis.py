@@ -10,6 +10,12 @@ class HybridAnalysis(Service):
     sname = "ha"
     api_keyl = 25
 
+    desc = f"{name} features in-depth static and dynamic analysis techniques\n" \
+           f"within sanboxed environments and is a malware repository created by\n" \
+           f"Payload Security"
+    subs = "public/private"
+    url = "https://www.hybrid-analysis.com/"
+
     api_dowf = APISpec()
     api_repf = APISpec("GET", "https://www.hybrid-analysis.com", "/api/scan/%s")
     api_subf = APISpec("POST", "https://www.hybrid-analysis.com", "/api/submit")

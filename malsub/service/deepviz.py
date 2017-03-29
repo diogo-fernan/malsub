@@ -11,6 +11,11 @@ class Deepviz(Service):
     sname = "dv"
     api_keyl = 64
 
+    desc = f"{name}"
+    subs = "private"
+    url = ""
+
+
     api_dowf = APISpec("POST", "https://api.deepviz.com", "/sandbox/sample")
     api_repf = APISpec("POST", "https://api.deepviz.com", "/general/report")
     api_subf = APISpec("POST", "https://api.deepviz.com", "/sandbox/submit")

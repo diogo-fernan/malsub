@@ -10,6 +10,11 @@ class OpenPhish(Service):
     sname = "op"
     api_keyl = 15
 
+    desc = f"{name} is a proprietary phishing threat intelligence source that\n" \
+           f"uses artificial intelligence for automated classification"
+    subs = "public/private"
+    url = "https://openphish.com/"
+
     # api_dowf = APISpec("GET", "https://openphish.com", "/prvt-intell/")
     api_dowf = APISpec("GET", "https://openphish.com", "/feed.txt")
     api_repf = APISpec()

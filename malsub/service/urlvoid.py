@@ -10,6 +10,11 @@ class URLVoid(Service):
     sname = "uv"
     api_keyl = 40
 
+    desc = f"{name} is a free blacklist- and reputation-based scanning engine\n" \
+           f"for URLs"
+    subs = "public"
+    url = "http://www.urlvoid.com/"
+
     api_dowf = APISpec()
     api_repf = APISpec()
     api_subf = APISpec()
@@ -45,7 +50,6 @@ class URLVoid(Service):
     def report_app(self, hash: Hash):
         pass
 
-    @Service.unsupported
     def report_dom(self, dom: str):
         self.api_repd.fulluri = self.api_repd.fullurl % \
                                 (self.get_apikey()["identifier"],
@@ -61,7 +65,6 @@ class URLVoid(Service):
     def report_url(self, url: str):
         pass
 
-    @Service.unsupported
     def submit_url(self, url: str):
         if url.startswith("http://"):
             url = url[7:]

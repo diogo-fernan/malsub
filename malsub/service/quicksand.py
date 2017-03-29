@@ -10,6 +10,11 @@ class QuickSand(Service):
     sname = "qs"
     api_keyl = 32
 
+    desc = f"{name} is a dynamic and static analysis framework for office\n" \
+           f"documents with obfuscation and encryption analysis"
+    subs = "public/private"
+    url = "https://quicksand.io/"
+
     api_dowf = APISpec()
     api_repf = APISpec("POST", "https://www.quicksand.io", "/api.php")
     api_subf = APISpec("POST", "https://www.quicksand.io", "/upload.php")

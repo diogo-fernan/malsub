@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
-"""Usage: malsub [-h] [-a <service>] (-d | -f | -q | -r | -s | -t) [-i | -o | -l | -u] [-p <num>] [-R] [-v ...] [<input> ...]
+"""
+Usage: malsub [-h] [-a <service>] [-H] [-p <num>] [-R] [-v ...]
+              [-d | -f | -q | -r | -s | -t]
+              [-i | -o | -l | -u]
+              [<input> ...]
 
 Interact with online malware and phishing analysis services for malware samples, domain names, IP addresses or URLs.
 
@@ -8,9 +12,10 @@ Options:
   -h, --help  show this help message and exit
 
   -a, --analysis <service>  character-separated list of services (class or short names) [default: all]
-  -p, --pause <num>         wait an interval in seconds between service requests (rate limit) [default: 0]
-  -R, --recursive           recurse on input paths
-  -v, --verbose             display verbose and debug messages
+  -H, --servhelp     show help messages about selected services and exit
+  -p, --pause <num>  wait an interval in seconds between service requests (rate limit) [default: 0]
+  -R, --recursive    recurse on input paths
+  -v, --verbose      display verbose and debug messages
 
 API functions:
   -d, --download  download files or malware samples
@@ -32,16 +37,23 @@ Examples:
   - Retrieve user quota for AVCaesar and Hybrid Analysis and be verbose:
 $ python3 malsub.py -a avc,ha -q -v
 
-  - Submit an URL for analysis to VirusTotal and output verbose and debug messages:
-$ python3 malsub.py -vva vt -su <url>
+  - Submit an URL for analysis to VirusTotal and output verbose and debug 
+    messages:
+$ python3 malsub.py -vva VirusTotal -su <url>
 
-  - Submit two files to maltracker, QuickSand and VirusTotal and pause 60 seconds between submissions:
-$ python3 malsub.py -a mt,qs,vt -p 60 -s <file1> <file2>
+  - Submit two files to maltracker, QuickSand and VirusTotal and pause 60
+    seconds between submissions:
+$ python3 malsub.py -a mt,qs,virustotal -p 60 -s <file1> <file2>
+
+  - Retrieve reports for a file, for files under a recursive path and for a hash
+    value:
+$ python3 malsub.py -a VxStream,vt -rRv <file> <path> <hash>
 
   - Retrieve analysis reports of a domain from all available services:
 $ python3 malsub.py -or <domain>
 
-  - Retrieve an analysis report from PDF Examiner of a PDF file identified by its hash value:
+  - Retrieve an analysis report from PDF Examiner of a PDF file identified by
+    its hash value:
 $ python3 malsub.py -a pe -r <hash>
 
   - Download a malware sample from MalShare:
@@ -51,11 +63,11 @@ Copyright (c) 2017 Diogo Fernandes
 https://github.com/diogo-fern/malsub
 """
 
-from docopt import docopt
+from docopt import docopt, printable_usage
 
 from malsub.core import main
 
-exit(main.run(docopt(__doc__)))
+exit(main.run(docopt(__doc__), printable_usage(__doc__)))
 
 
 # notes

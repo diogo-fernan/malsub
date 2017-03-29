@@ -10,6 +10,11 @@ class Metadefender(Service):
     sname = "md"
     api_keyl = 32
 
+    desc = f"{name} is a proprietary multi-scanning engine for malware,\n" \
+           f"applications and IP addresses belonging to OPSWAT"
+    subs = "public/private"
+    url = "https://www.metadefender.com/"
+
     api_dowf = APISpec()
     # api_repf = APISpec("GET", "https://api.metadefender.com", "/v2/file/")
     api_repf = APISpec("GET", "https://api.metadefender.com", "/v2/hash/")

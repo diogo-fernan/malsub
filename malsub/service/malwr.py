@@ -11,6 +11,11 @@ class Malwr(Service):
     sname = "mw"
     api_keyl = 32
 
+    desc = f"{name} is a community-based online sandbox for dynamic analysis\n" \
+           f"and is a malware repository"
+    subs = "public"
+    url = "https://malwr.com/"
+
     api_dowf = APISpec()
     api_repf = APISpec()
     api_subf = APISpec("POST", "https://malwr.com", "/api/analysis/add")
@@ -36,6 +41,7 @@ class Malwr(Service):
     def report_file(self, hash: Hash):
         pass
 
+    @Service.unsupported
     def submit_file(self, file: File):
         # HTTP 405 Method Not Allowed
         self.api_subf.data = {**self.get_apikey(), "shared": "yes"}

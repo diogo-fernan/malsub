@@ -1,9 +1,8 @@
-from traceback import format_exc
 from concurrent.futures import as_completed, ThreadPoolExecutor
 from multiprocessing import cpu_count
+from traceback import format_exc
 
-from malsub.common import out
-from malsub.core import color
+from malsub.common import color, out
 from malsub.service import base
 
 __maxt = cpu_count()

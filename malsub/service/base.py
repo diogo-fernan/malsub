@@ -60,7 +60,7 @@ class Service(metaclass=MetaMix):
     __api_srch = "api_srch"
     __api_quot = "api_quot"
 
-    __attr = ["api_keyl", "name", "sname"]
+    __attr = ["api_keyl", "desc", "name", "sname", "subs", 'url']
     __apiattr = [__api_dowf, __api_subf, __api_repf,
                  __api_repa, __api_repd, __api_repi,
                  __api_subu, __api_repu,
@@ -153,7 +153,7 @@ class Service(metaclass=MetaMix):
 
     @classmethod
     def get_apifn(cls):
-        return [api for api in cls.__apifn.keys()]
+        return [api for api in cls.__fnmap.keys()]
 
     @classmethod
     def test_api(cls, apifn: str):
@@ -186,6 +186,12 @@ class Service(metaclass=MetaMix):
         # get a symbolic return value from fn and print after success
         return f"\"{apifn}\" success"
 
+    @classmethod
+    def help(cls):
+        fn = [fn for fn in cls.__fn if
+              not hasattr(getattr(cls, fn), UNSUPPORTED)]
+        return [cls.desc, cls.subs, cls.url, ",".join(fn)]
+
     @staticmethod
     def unsupported(fn):
         setattr(fn, UNSUPPORTED, True)
@@ -196,16 +202,28 @@ class Service(metaclass=MetaMix):
         setattr(cls, UNUSED, True)
         return cls
 
-    __apifn = {download_file.__name__: __api_dowf,
-               report_file.__name__: __api_repf,
-               submit_file.__name__: __api_subf,
-               report_app.__name__: __api_repa,
-               report_dom.__name__: __api_repd,
-               report_ip.__name__: __api_repi,
-               report_url.__name__: __api_repu,
-               submit_url.__name__: __api_subu,
-               search.__name__: __api_srch,
-               quota.__name__: __api_quot}
+    __fn = [download_file.__name__,
+            report_file.__name__,
+            submit_file.__name__,
+            report_app.__name__,
+            report_dom.__name__,
+            report_ip.__name__,
+            report_url.__name__,
+            submit_url.__name__,
+            search.__name__,
+            quota.__name__]
+
+    __fnmap = dict(zip(__fn, __apiattr))
+    # __fnmap = {download_file.__name__: __api_dowf,
+    #            report_file.__name__: __api_repf,
+    #            submit_file.__name__: __api_subf,
+    #            report_app.__name__: __api_repa,
+    #            report_dom.__name__: __api_repd,
+    #            report_ip.__name__: __api_repi,
+    #            report_url.__name__: __api_repu,
+    #            submit_url.__name__: __api_subu,
+    #            search.__name__: __api_srch,
+    #            quota.__name__: __api_quot}
 
 
 class APIKey:
