@@ -10,6 +10,7 @@
 The following publicly available services are currently included in *malsub*:
 
 * [AVCaesar](https://avcaesar.malware.lu/);
+* [Have I been pwned?](https://haveibeenpwned.com/);
 * [Hybrid Analysis](https://www.hybrid-analysis.com/);
 * [MalShare](https://malshare.com/);
 * [maltracker](https://maltracker.net/);
@@ -21,6 +22,7 @@ The following publicly available services are currently included in *malsub*:
 * [QuickSand](https://www.quicksand.io/);
 * [Safe Browsing](https://developers.google.com/safe-browsing/);
 * [Threat Crowd](https://www.threatcrowd.org/);
+* [ThreatStream](https://www.anomali.com/platform/threatstream);
 * [URLVoid](http://www.urlvoid.com/);
 * [VirusTotal](https://www.virustotal.com/);
 * [VxStream](https://www.vxstream-sandbox.com/).
@@ -31,12 +33,12 @@ The main goal of *malsub* is to serve as a one-stop-shop for querying multiple o
 
 # Dependencies and Usage
 
-*malsub* requires a few modules that are specified in `requirements.txt`. The framework is structured into a package and sub packages. Its folder structure and some key files to be taken into consideration when using it or developing additional service models are described as follows:
+*malsub* requires a few modules that are specified in `requirements.txt`. The framework is structured into a package and sub packages. Its folder structure and some key files to be taken into consideration when using it or developing additional service modules are described as follows:
 
 * `malsub/malsub.py`: application entry point;
-* `malsub/data`: miscellaneous data folder;
+* `malsub/data/`: miscellaneous data folder;
     * `apikey.yaml`: YAML data file of the API key and username pairs;
-* `malsub/downl`: downloads folder of files and samples;
+* `malsub/downl/`: downloads folder of files and samples;
 * `malsub/malsub/`: *malsub* package;
 * `malsub/malsub/common/`: modules that have a common use all throughout;
     * `out.py`: module with output displaying functions according to specific formats and log level (debug, verbose, informational or error);
@@ -86,43 +88,41 @@ Supported hash values: MD5, SHA1, SHA-256 and SHA-512.
 # Examples
 
 * Retrieve user quota for AVCaesar and Hybrid Analysis and be verbose:
-
 ```
 $ python3 malsub.py -a avc,ha -q -v
 ```
 
 * Submit an URL for analysis to VirusTotal and output verbose and debug messages:
-
 ```
 $ python3 malsub.py -vva VirusTotal -su <url>
 ```
 
 * Submit two files to maltracker, QuickSand and VirusTotal and pause 60 seconds between submissions:
-
 ```
 $ python3 malsub.py -a mt,qs,virustotal -p 60 -s <file1> <file2>
 ```
 
 * Retrieve reports for a file, for files under a recursive path and for a hash value:
-
 ```
 $ python3 malsub.py -a VxStream,vt -rRv <file> <path> <hash>
 ```
 
-* Retrieve analysis reports of a domain from all available services:
-
+* Retrieve analysis reports of a domain from all supporting services:
 ```
 $ python3 malsub.py -or <domain>
 ```
 
-* Retrieve an analysis report from PDF Examiner of a PDF file identified by its hash value:
+* Retrieve analysis reports of a domain from all supporting services, but exclude ThreatCrowd and maltracker:
+```
+$ python3 malsub.py -a all,-ThreatCrowd,-mt -or <domain>
+```
 
+* Retrieve an analysis report from PDF Examiner of a PDF file identified by its hash value:
 ```
 $ python3 malsub.py -a pe -r <hash>
 ```
 
 * Download a malware sample from MalShare:
-
 ```
 $ python3 malsub.py -a ms -d <hash>
 ```
@@ -167,21 +167,24 @@ class VirusTotal(Service):
     api_repf = APISpec("POST", "https://www.virustotal.com", "/vtapi/v2/file/report")
     # ... (other API functions specifications)
 
-    # '@Service.unsupported' marks a function as unsupported by a particular service, being ignored by the main application
+    # '@Service.unsupported' marks a function as unsupported by a particular
+    # service, being ignored by the main application
     @Service.unsupported
     def download_file(self, hash: Hash):
-        # all base functions need to be explicitly declared even if not used by a service
+        # all base functions need to be explicitly declared even if not used by
+        # a service
         pass
 
     def report_file(self, hash: Hash):
-        # 'hash' is an object of 'Hash' with a hash value and its type (MD5, SHA1, SHA-256 or SHA-512)
+        # 'hash' is an object of 'Hash' with a hash value and its type (MD5,
+        # SHA1, SHA-256 or SHA-512)
         # fill in the request fields
         # in this case, the 'data' corresponds to the HTTP POST body data
         # 'self.get_apikey()' returns the corresponding API key pair
         self.api_repf.data = {**self.get_apikey(), "resource": hash.hash}
         # make the request
         data, _ = request(self.api_repf)
-        # format as a JSON dictionary and "prune" the tree at depth one
+        # format results as a JSON dictionary and "prune" the tree at depth one
         data = frmt.jsontree(data, depth=1)
         # data = frmt.jsonvert(data["scans"]) # tabular format
         # open a URL in the browser
@@ -203,6 +206,7 @@ class VirusTotal(Service):
 
 # Change History
 
+* *malsub* **20170607**: added Have I been pwned? and Anomali ThreatStream as intelligence services, and added service exclusion in `-a` with a dash precedence (*e.g.*, `-a all,-ha` excludes Hybrid Analysis).
 * *malsub* **20170329**: added `-H` to output help information about services, fixed AVCaesar, modified URLVoid and made other improvements.
 * *malsub* **20170319**: made generic improvements, added files as input for report retrieval, added a recurse option and added VxStream (private version of Hybrid Analysis) as a service module.
 * *malsub* **20170305**: first major release.

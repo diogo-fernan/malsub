@@ -1,6 +1,5 @@
 from malsub.service.base import APISpec, Service
-from malsub.core.crypto import Hash
-from malsub.core.file import File
+from malsub.core.type import File, Hash
 from malsub.core.web import request, openurl
 from malsub.common import out, rw, frmt
 
@@ -8,7 +7,7 @@ from malsub.common import out, rw, frmt
 class OpenPhish(Service):
     name = "OpenPhish"
     sname = "op"
-    api_keyl = 15
+    api_keyl = 0
 
     desc = f"{name} is a proprietary phishing threat intelligence source that\n" \
            f"uses artificial intelligence for automated classification"

@@ -1,6 +1,5 @@
 from malsub.service.base import APISpec, Service
-from malsub.core.crypto import Hash
-from malsub.core.file import File
+from malsub.core.type import File, Hash
 from malsub.core.meta import MALSUB_NAME, MALSUB_VERSION
 from malsub.core.web import request, openurl
 from malsub.common import out, frmt

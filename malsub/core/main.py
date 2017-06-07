@@ -6,7 +6,7 @@ from malsub.service import base
 __NOINPUT = '\u2014'  # em-dash
 
 anserv = []
-ina = []
+iarg = []
 pause = 0
 
 
@@ -18,7 +18,7 @@ def run(arg, usage):
             print(usage)
             exit(0)
 
-        global ina, pause
+        global iarg, pause
         try:
             pause = int(arg["--pause"])
             if int(pause) < 0:
@@ -29,26 +29,26 @@ def run(arg, usage):
             pause = 0
 
         if arg["--test"]:
-            ina = base.Service.get_apifn()
+            iarg = base.Service.get_apifn()
         elif arg["--find"]:
-            ina = arg["<input>"]
+            iarg = arg["<input>"]
         elif arg["--quota"]:
-            ina = __NOINPUT
+            iarg = __NOINPUT
         else:
             # domain
             if arg["--domain"]:
-                ina = web.parse_domainl(*arg["<input>"])
-                if not ina:
+                iarg = web.parse_domainl(*arg["<input>"])
+                if not iarg:
                     out.error("all input domain names are invalid")
             # ipaddr
             elif arg["--ipaddr"]:
-                ina = web.parse_ipaddrl(*arg["<input>"])
-                if not ina:
+                iarg = web.parse_ipaddrl(*arg["<input>"])
+                if not iarg:
                     out.error("all input IP addresses are invalid")
             # url
             elif arg["--url"]:
-                ina = web.parse_fullurll(*arg["<input>"])
-                if not ina:
+                iarg = web.parse_fullurll(*arg["<input>"])
+                if not iarg:
                     out.error("all input URLs are invalid")
             # file, hash
             else:
@@ -66,22 +66,22 @@ def run(arg, usage):
                     arg["<input>"] = tmp
 
                 if arg["--submit"]:
-                    ina = file.new(*arg["<input>"])
+                    iarg = file.new(*arg["<input>"])
                 elif arg["--report"]:  # file, hash
-                    ina = [f for f in arg["<input>"] if not isfile(f)]
+                    iarg = [f for f in arg["<input>"] if not isfile(f)]
                     tmp = [f for f in arg["<input>"] if isfile(f)]
                     if rw.validff(tmp):  # file
-                        ina += [crypto.sha256(f) for f in tmp]
-                    ina = crypto.parse_hashl(*ina)  # hash
+                        iarg += [crypto.sha256(f) for f in tmp]
+                    iarg = crypto.parse_hashl(*iarg)  # hash
                 else:  # arg["--download"]
                     if arg["<input>"]:
-                        ina = crypto.parse_hashl(*arg["<input>"])
+                        iarg = crypto.parse_hashl(*arg["<input>"])
                     else:
-                        ina = __NOINPUT
-        out.debug("ina", obj=ina)
+                        iarg = __NOINPUT
+        out.debug("iarg", obj=iarg)
 
-        if ina != __NOINPUT and \
-                not arg["--test"] and len(ina) != len(arg["<input>"]):
+        if iarg != __NOINPUT and \
+                not arg["--test"] and len(iarg) != len(arg["<input>"]):
             rw.yn("one or more input arguments are invalid")
 
     def loadserv():
@@ -91,7 +91,13 @@ def run(arg, usage):
         out.debug("_serv", obj=_serv)
         if arg["--analysis"].lower() != "all":
             from re import findall
-            anserv = list(findall(r"\w+", arg["--analysis"].lower()))
+            anserv = [s for s in
+                      list(findall(r"[\w-]+", arg["--analysis"].lower()))]
+            notanserv = [s[1:] for s in anserv if s.startswith("-")]
+            if "all" in anserv:
+                anserv = [s for s in _serv if s not in notanserv]
+            else:
+                anserv = [s for s in anserv if s[1:] not in notanserv]
 
             inv = [s for s in anserv if s not in _serv]
             if inv:
@@ -116,7 +122,8 @@ def run(arg, usage):
             out.error(f"cannot load API keys file \"{meta.APIKEY_PATH}\": {e}")
         else:
             for n, k in apikey.items():
-                if type(k) is not dict or k.get("apikey") is None:
+                if type(k) is not dict or \
+                  k.get("apikey") is None or k.get("apikey") == "":
                     out.error(f"service \"{anserv[n].name}\" missing "
                               f"a valid API key \"{k}\"")
                 else:
@@ -147,7 +154,7 @@ def run(arg, usage):
         from malsub.core.work import exec
 
         summ = []
-        for i, j in enumerate(ina):
+        for i, j in enumerate(iarg):
             start = time()
             fn, kwarg = "", {}
             if arg["--test"]:
@@ -195,11 +202,11 @@ def run(arg, usage):
             if fn:  # and kwarg:
                 summ += [[i + 1, util.trunc(j), *exec(anserv, fn, kwarg)]]
 
-            if i < len(ina) - 1 and time() - start < pause:
+            if i < len(iarg) - 1 and time() - start < pause:
                 nap = pause - (time() - start)
                 out.verb(f"sleeping for {nap} seconds")
                 sleep(nap)
-        file.close(ina)
+        file.close(iarg)
 
         header = ["#", "input"] + [s.obj.name for s in anserv]
         out.verb(f"{meta.MALSUB_NAME} finished with results:\n"

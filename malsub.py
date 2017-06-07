@@ -6,7 +6,8 @@ Usage: malsub [-h] [-a <service>] [-H] [-p <num>] [-R] [-v ...]
               [-i | -o | -l | -u]
               [<input> ...]
 
-Interact with online malware and phishing analysis services for malware samples, domain names, IP addresses or URLs.
+Interact with online malware, URL and intelligence analysis services for malware
+samples, domain names, IP addresses or URLs.
 
 Options:
   -h, --help  show this help message and exit
@@ -37,7 +38,7 @@ Examples:
   - Retrieve user quota for AVCaesar and Hybrid Analysis and be verbose:
 $ python3 malsub.py -a avc,ha -q -v
 
-  - Submit an URL for analysis to VirusTotal and output verbose and debug 
+  - Submit an URL for analysis to VirusTotal and output verbose and debug
     messages:
 $ python3 malsub.py -vva VirusTotal -su <url>
 
@@ -49,8 +50,12 @@ $ python3 malsub.py -a mt,qs,virustotal -p 60 -s <file1> <file2>
     value:
 $ python3 malsub.py -a VxStream,vt -rRv <file> <path> <hash>
 
-  - Retrieve analysis reports of a domain from all available services:
+  - Retrieve analysis reports of a domain from all supporting services:
 $ python3 malsub.py -or <domain>
+
+  - Retrieve analysis reports of a domain from all supporting services, but
+    exclude ThreatCrowd and maltracker:
+$ python3 malsub.py -a all,-ThreatCrowd,-mt -or <domain>
 
   - Retrieve an analysis report from PDF Examiner of a PDF file identified by
     its hash value:
@@ -70,9 +75,23 @@ from malsub.core import main
 exit(main.run(docopt(__doc__), printable_usage(__doc__)))
 
 
+# https://malwareconfig.com/api/
+# http://www.cryptam.com/
+# https://github.com/mwtracker/cryptam_tools
+
+
 # notes
 # pyflakes, pylint, pychecker, and pep8
 # CONTRIBUTING.md
+
+# -b
+    # open URLs in the browser
+
+# make groups
+    # -g mal
+    # -g intel
+    # -g url
+# relative/full path for data/ and downl/
 
 # password-protected samples
 # compression

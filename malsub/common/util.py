@@ -17,9 +17,13 @@ def trunc(string, width=None, sep=" (...) "):
     return string[:dif1] + sep + ("", string[-dif2:])[dif2 > 0]
 
 
-def hexdump(string, offset=0x00, sep='.', width=16):
+def hexdump(string, enc='utf-8', offset=0x00, sep='.', width=16):
+    # TODO: input can be bytes or string
+    # "{:02x}".format(ord(c)) for c in "hello world"
+    # "{:02x}".format(c) for c in b"hello world"
+    # "{:02x}".format(c) for c in bytearray("hello world", "utf-8")
     from string import printable
-    string = bytearray(string, "utf-8")
+    string = bytearray(string, enc)
     dmp = ""
     for x in [string[i:i + width] for i in range(len(string)) if i % 16 == 0]:
         txt = ""
