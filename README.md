@@ -7,7 +7,7 @@
 
 *malsub* is a Python 3.6.x framework that wraps several web services of **online malware and URL analysis sites** through their **RESTful Application Programming Interfaces (APIs)**. It supports submitting files or URLs for analysis, retrieving reports by hash values, domains, IPv4 addresses or URLs, downloading samples and other files, making generic searches and getting API quota values. The framework is designed in a modular way so that new services can be added with ease by following the provided **template module** and functions to make HTTP `GET` and `POST` requests and to pretty print results. This approach avoids having to write individual and specialized wrappers for each and every API by leveraging what they have in common in their calls and responses. The framework is also multi-threaded and dispatches service API functions across a thread pool for each input argument, meaning that it spawns a pool of threads per each file provided for submission or per each hash value provided for report retrieval, for example.
 
-The following publicly available services are currently included in *malsub*:
+The following services are currently included in *malsub*:
 
 * [AVCaesar](https://avcaesar.malware.lu/);
 * [Have I been pwned?](https://haveibeenpwned.com/);
@@ -57,7 +57,8 @@ Usage: malsub [-h] [-a <service>] [-H] [-p <num>] [-R] [-v ...]
               [-i | -o | -l | -u]
               [<input> ...]
 
-Interact with online malware and phishing analysis services for malware samples, domain names, IP addresses or URLs.
+Interact with online malware, URL and intelligence analysis services for malware
+samples, domain names, IP addresses or URLs.
 
 Options:
   -h, --help  show this help message and exit
@@ -89,42 +90,42 @@ Supported hash values: MD5, SHA1, SHA-256 and SHA-512.
 
 * Retrieve user quota for AVCaesar and Hybrid Analysis and be verbose:
 ```
-$ python3 malsub.py -a avc,ha -q -v
+$ python3.6 malsub.py -a avc,ha -q -v
 ```
 
 * Submit an URL for analysis to VirusTotal and output verbose and debug messages:
 ```
-$ python3 malsub.py -vva VirusTotal -su <url>
+$ python3.6 malsub.py -vva VirusTotal -su <url>
 ```
 
 * Submit two files to maltracker, QuickSand and VirusTotal and pause 60 seconds between submissions:
 ```
-$ python3 malsub.py -a mt,qs,virustotal -p 60 -s <file1> <file2>
+$ python3.6 malsub.py -a mt,qs,virustotal -p 60 -s <file1> <file2>
 ```
 
 * Retrieve reports for a file, for files under a recursive path and for a hash value:
 ```
-$ python3 malsub.py -a VxStream,vt -rRv <file> <path> <hash>
+$ python3.6 malsub.py -a VxStream,vt -rRv <file> <path> <hash>
 ```
 
 * Retrieve analysis reports of a domain from all supporting services:
 ```
-$ python3 malsub.py -or <domain>
+$ python3.6 malsub.py -or <domain>
 ```
 
 * Retrieve analysis reports of a domain from all supporting services, but exclude ThreatCrowd and maltracker:
 ```
-$ python3 malsub.py -a all,-ThreatCrowd,-mt -or <domain>
+$ python3.6 malsub.py -a all,-ThreatCrowd,-mt -or <domain>
 ```
 
 * Retrieve an analysis report from PDF Examiner of a PDF file identified by its hash value:
 ```
-$ python3 malsub.py -a pe -r <hash>
+$ python3.6 malsub.py -a pe -r <hash>
 ```
 
 * Download a malware sample from MalShare:
 ```
-$ python3 malsub.py -a ms -d <hash>
+$ python3.6 malsub.py -a ms -d <hash>
 ```
 
 # Service Modules
@@ -158,8 +159,9 @@ class VirusTotal(Service):
     name = "VirusTotal"
     # short name of the service
     sname = "vt"
-    # length of the API key
-    api_keyl = 64
+    # length of the API key as a single integer or a list of integers specifying
+    # multiple key lengths
+    api_keyl = [32, 48, 64]
 
     # API specification to download a file or a sample
     api_dowf = APISpec()
@@ -206,7 +208,8 @@ class VirusTotal(Service):
 
 # Change History
 
-* *malsub* **20170607**: added Have I been pwned? and Anomali ThreatStream as intelligence services, and added service exclusion in `-a` with a dash precedence (*e.g.*, `-a all,-ha` excludes Hybrid Analysis).
+* *malsub* **20170907**: improved the VirusTotal and VxStream modules.
+* *malsub* **20170607**: added Have I been pwned? and Anomali ThreatStream as intelligence services, and added service exclusion in `-a` with a dash prefix (*e.g.*, `-a all,-ha` excludes Hybrid Analysis).
 * *malsub* **20170329**: added `-H` to output help information about services, fixed AVCaesar, modified URLVoid and made other improvements.
 * *malsub* **20170319**: made generic improvements, added files as input for report retrieval, added a recurse option and added VxStream (private version of Hybrid Analysis) as a service module.
 * *malsub* **20170305**: first major release.

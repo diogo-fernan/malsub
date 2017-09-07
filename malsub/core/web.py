@@ -5,15 +5,16 @@ from urllib.parse import quote_plus, urlencode
 from malsub.common import out, regex
 from malsub.core import meta
 
-GET = 'GET'
-POST = 'POST'
+GET = "GET"
+POST = "POST"
 METHOD = [GET, POST]
 
-__timeout = 60
+__timeout = 120
 
-__header = {'Accept': '*/*',
-            'User-Agent': f"{meta.MALSUB_NAME} {meta.MALSUB_URL}",
-            'Connection': 'close'}
+__header = {"Accept": "*/*",
+            "User-Agent": f"{meta.MALSUB_NAME}{meta.MALSUB_VERSION} "
+                          f"({meta.MALSUB_URL})",
+            "Connection": "close"}
 
 
 # class NoContentException(Exception):
@@ -56,8 +57,7 @@ def _request(fn, uri, auth=None, cookie=None, data=None, file=None, header=None,
     # 	# out.warn(f"too many HTTP redirects to \"{uri}\": {e}")
     # 	raise TooManyRedirects(e)
     # else:
-    out.debug(f"HTTP {res.status_code} \"{res.reason}\""
-              f" -- \"{uri}\"")
+    out.debug(f"HTTP {res.status_code} \"{res.reason}\" -- \"{uri}\"")
 
     if res.status_code == 204 or res.headers.get("Content-Length") == 0:
         raise Exception(f"HTTP {res.status_code} \"{res.reason}\""
@@ -116,11 +116,10 @@ def test(apispec):
              stream=False)
     res.raise_for_status()
     # except Exception as e:
-    #  	out.warn(f"unsuccessfull test HTTP {apisec.method} to "
+    #  	out.warn(f"unsuccessful test HTTP {apisec.method} to "
     # 			 f"\"{apisec.fulluri}\": {e}")
     # else:
-    out.debug(
-        f"successfull test HTTP {apispec.method} to \"{apispec.fulluri}\"")
+    out.debug(f"successful test HTTP {apispec.method} to \"{apispec.fulluri}\"")
     res.close()
     del res
     return
@@ -142,8 +141,7 @@ def quoteurl(url):
 
 def parse_method(method):
     if not method.upper() in METHOD:
-        out.error(
-            f"unknown HTTP method in \"{method}\" (should be \"{METHOD}\")")
+        out.error(f"unknown HTTP method in \"{method}\" (should be \"{METHOD}\")")
     return method.upper()
 
 

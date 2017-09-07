@@ -8,7 +8,7 @@ from malsub.common import out, frmt, rw
 class VirusTotal(Service):
     name = "VirusTotal"
     sname = "vt"
-    api_keyl = 64
+    api_keyl = [32, 48, 64]
 
     desc = f"{name} is a well-known online repository by Google of malware and\n" \
            f"malicious URLs with on-demand scanning features using a number of\n" \
@@ -29,7 +29,7 @@ class VirusTotal(Service):
     api_repu = APISpec("POST", "https://www.virustotal.com", "/vtapi/v2/url/report")
     api_subu = APISpec("POST", "https://www.virustotal.com", "/vtapi/v2/url/scan")
 
-    api_srch = APISpec()
+    api_srch = APISpec("GET", "https://www.virustotal.com", "/vtapi/v2/file/search")
     api_quot = APISpec()
 
     # https://www.virustotal.com/en/documentation/public-api/
@@ -61,6 +61,18 @@ class VirusTotal(Service):
     def submit_file(self, file: File):
         self.api_subf.data = self.get_apikey()
         self.api_subf.file = {"file": (file.name, file.fd())}
+        if file.len > 32 * 1024 * 1024:
+            api_subfl = APISpec("GET", "https://www.virustotal.com",
+                "/vtapi/v2/file/scan/upload_url")
+            api_subfl.param = {**self.get_apikey()}
+
+            data, _ = request(api_subfl)
+            data = frmt.jsontree(data)
+            self.api_subf.fulluri = data["upload_url"]
+            self.api_subf.data = None
+        else:
+            self.api_subf.default()
+
         data, _ = request(self.api_subf)
         data = frmt.jsontree(data)
         # web.openurl(data["permalink"])
@@ -98,9 +110,11 @@ class VirusTotal(Service):
         # web.openurl(data["permalink"])
         return out.pformat(data)
 
-    @Service.unsupported
     def search(self, srch: str):
-        pass
+        self.api_srch.param = {**self.get_apikey(), "query": srch}
+        data, _ = request(self.api_srch)
+        data = frmt.jsontree(data)
+        return out.pformat(data)
 
     @Service.unsupported
     def quota(self):

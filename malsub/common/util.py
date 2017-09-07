@@ -17,15 +17,13 @@ def trunc(string, width=None, sep=" (...) "):
     return string[:dif1] + sep + ("", string[-dif2:])[dif2 > 0]
 
 
-def hexdump(string, enc='utf-8', offset=0x00, sep='.', width=16):
-    # TODO: input can be bytes or string
-    # "{:02x}".format(ord(c)) for c in "hello world"
-    # "{:02x}".format(c) for c in b"hello world"
-    # "{:02x}".format(c) for c in bytearray("hello world", "utf-8")
+def hexdump(byte, offset=0x00, sep='.', width=16):
+    # pip3 install hexdump
+    # hexdump.hexdump(b"data")
     from string import printable
-    string = bytearray(string, enc)
+    byte = bytearray(byte)
     dmp = ""
-    for x in [string[i:i + width] for i in range(len(string)) if i % 16 == 0]:
+    for x in [byte[i:i + width] for i in range(len(byte)) if i % 16 == 0]:
         txt = ""
         dmp += "{:#08x}  ".format(offset)
         for i, j in enumerate(x):
@@ -48,7 +46,7 @@ def rand01():
 
 def rand(min, max):
     from random import random, uniform
-    #	return min + uniform(0, 1) * (max - min)
+    # return min + uniform(0, 1) * (max - min)
     return min + random() * (max - min)
 
 

@@ -1,4 +1,5 @@
 from os import path, stat
+from os.path import isfile
 
 from malsub.common.rw import openf, tryf
 from malsub.core.crypto import md5, sha256
@@ -36,7 +37,7 @@ def new(*files):
     # 	if tryf(f):
     # 		filel += [File(f)]
     # return filel
-    return [File(f) for f in files]
+    return [File(f) for f in files if isfile(f)]
 
 
 def close(*files):

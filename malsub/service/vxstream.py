@@ -1,7 +1,7 @@
 from malsub.service.base import APISpec, Service
 from malsub.core.type import File, Hash, HASH_SHA256
 from malsub.core.web import request, openurl
-from malsub.common import out, frmt
+from malsub.common import out, frmt, rw
 
 
 class VxStream(Service):
@@ -15,11 +15,11 @@ class VxStream(Service):
     subs = "private"
     url = "https://www.vxstream-sandbox.com/"
 
-    api_stat = APISpec("GET", "https://demo12.vxstream-sandbox.com", "/api/state/%s")
+    api_stat = APISpec("GET", "https://demo11.vxstream-sandbox.com", "/api/state/%s")
 
-    api_dowf = APISpec()
-    api_repf = APISpec("GET", "https://demo12.vxstream-sandbox.com", "/api/scan/%s")
-    api_subf = APISpec("POST", "https://demo12.vxstream-sandbox.com", "/api/submit")
+    api_dowf = APISpec("GET", "https://demo11.vxstream-sandbox.com", "/api/result/%s")
+    api_repf = APISpec("GET", "https://demo11.vxstream-sandbox.com", "/api/scan/%s")
+    api_subf = APISpec("POST", "https://demo11.vxstream-sandbox.com", "/api/submit")
 
     api_repa = APISpec()
     api_repd = APISpec()
@@ -47,21 +47,52 @@ class VxStream(Service):
     # 110: Windows 7 64 bit (Kernelmode Monitor, cloud service only)
     # 200: Android Static Analysis
 
-    @Service.unsupported
-    def download_file(self, hash: Hash):
-        pass
-
-    def report_file(self, hash: Hash):
+    def state(self, hash: Hash):
         if hash.alg == HASH_SHA256:
             self.api_stat.fulluri = self.api_stat.fullurl % hash.hash
-            self.api_stat.param = {"environmentId": 100, "type": "json",
-                                   **self.get_apikey()}
+            self.api_stat.param = {
+                "environmentId": 100,
+                "type": "json",
+                **self.get_apikey()
+            }
             data, _ = request(self.api_stat, json=True)
             if data["response_code"] == 0 and \
                             data["response"]["state"] == "SUCCESS":
+                return data, True
+            else:
+                return data, False
+        else:
+            return False
+
+    def download_file(self, hash: Hash):
+        if hash.alg == HASH_SHA256:
+            data, flag = self.state(hash)
+            if flag:
+                self.api_dowf.fulluri = self.api_dowf.fullurl % hash.hash
+                self.api_dowf.param = {
+                    "environmentId": 100,
+                    "type": "bin",
+                    **self.get_apikey()
+                }
+                filename = hash.hash + ".gz"
+                data, _ = request(self.api_dowf, bin=True)
+                rw.writef(filename, data)
+                return f"downloaded \"{filename}\""
+            else:
+                return f"sample \"{hash}\" private or not found"
+        else:
+            return f"{hash.alg} is not SHA-256"
+
+    def report_file(self, hash: Hash):
+        if hash.alg == HASH_SHA256:
+            data, flag = self.state(hash)
+            if flag:
                 self.api_repf.fulluri = self.api_repf.fullurl % hash.hash
-                self.api_repf.param = {"environmentId": 100,
-                                       "type": "json", **self.get_apikey()}
+                self.api_repf.param = {
+                    "environmentId": 100,
+                    "type": "json",
+                    **self.get_apikey()
+                }
                 data, _ = request(self.api_repf)
             return data
         else:
@@ -69,8 +100,13 @@ class VxStream(Service):
 
     def submit_file(self, file: File):
         self.api_subf.auth = self.get_apikey(key=True, user=True)
-        self.api_subf.data = {"environmentId": 100}
-        self.api_subf.file = {"file": file.fd()}
+        self.api_subf.data = {
+            "environmentId": 100
+            # "nosharevt": "true"
+        }
+        self.api_subf.file = {
+            "file": file.fd()
+        }
         data, _ = request(self.api_subf)
         return data
 
@@ -92,8 +128,11 @@ class VxStream(Service):
         hash = Hash(url)
         if hash.alg == HASH_SHA256:
             self.api_stat.fulluri = self.api_stat.fullurl % hash.hash
-            self.api_stat.param = {"environmentId": 100,
-                                   "type": "json", **self.get_apikey()}
+            self.api_stat.param = {
+                "environmentId": 100,
+                "type": "json",
+                **self.get_apikey()
+            }
             data, _ = request(self.api_stat, json=True)
             if data["response_code"] == 0 and \
                             data["response"]["state"] == "SUCCESS":
@@ -107,13 +146,19 @@ class VxStream(Service):
 
     def submit_url(self, url: str):
         self.api_subu.auth = self.get_apikey(key=True, user=True)
-        self.api_subu.data = {"analyzeurl": url, "environmentId": 100}
+        self.api_subu.data = {
+            "analyzeurl": url,
+            "environmentId": 100
+        }
         self.api_subu.param = self.get_apikey()
         data, _ = request(self.api_subu)
         return data
 
     def search(self, srch: str):
-        self.api_srch.param = {"query": srch, **self.get_apikey()}
+        self.api_srch.param = {
+            "query": srch,
+            **self.get_apikey()
+        }
         data, _ = request(self.api_srch)
         return data
 
