@@ -32,6 +32,8 @@ class VirusTotal(Service):
     api_srch = APISpec("GET", "https://www.virustotal.com", "/vtapi/v2/file/search")
     api_quot = APISpec()
 
+    # https://developers.virustotal.com/v2.0/
+
     # https://www.virustotal.com/en/documentation/public-api/
     # https://www.virustotal.com/en/documentation/private-api/
 
@@ -51,7 +53,11 @@ class VirusTotal(Service):
         return f"downloaded \"{filename}\""
 
     def report_file(self, hash: Hash):
-        self.api_repf.data = {**self.get_apikey(), "resource": hash.hash}
+        self.api_repf.param = {
+            **self.get_apikey(),
+            "allinfo": "true",
+            "resource": hash.hash
+        }
         data, _ = request(self.api_repf)
         data = frmt.jsontree(data, depth=1)
         # data = frmt.jsonvert(data["scans"])
