@@ -18,6 +18,12 @@ HybridAnalysis:
         apikey: <apikey>
     user:
         secret: <apiuser>
+JoeSandbox:
+    apikey:
+        apikey: <apikey>
+        # Please accept the Terms and  Conditions:
+        # https://jbxcloud.joesecurity.org/download/termsandconditions.pdf
+        accept-tac: no
 MalShare:
     apikey:
         api_key: <apikey>
