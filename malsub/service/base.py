@@ -157,32 +157,32 @@ class Service(metaclass=MetaMix):
 
     @classmethod
     def test_api(cls, apifn: str):
-        fn = getattr(cls, apifn)
+        fn = getattr(cls(), apifn)
         if hasattr(fn, UNSUPPORTED):
             raise Unsupported
         if apifn == DOWNLOAD_FILE:
             # empty: d41d8cd98f00b204e9800998ecf8427e
-            fn(cls, Hash("e24b91383aa2547f23bfe2c500e2d2f4"))
+            fn(Hash("e24b91383aa2547f23bfe2c500e2d2f4"))
         elif apifn == REPORT_FILE:
-            fn(cls, Hash("e24b91383aa2547f23bfe2c500e2d2f4"))
+            fn(Hash("e24b91383aa2547f23bfe2c500e2d2f4"))
         elif apifn == SUBMIT_FILE:
-            fn(cls, File(SAMPLE_PATH))
+            fn(File(SAMPLE_PATH))
         elif apifn == REPORT_APP:
-            fn(cls, Hash("9B6AEA1992775510CB9014AD6860D146"))
+            fn(Hash("9B6AEA1992775510CB9014AD6860D146"))
         elif apifn == REPORT_DOM:
             # ovh.de
-            fn(cls, "myjino.ru")
+            fn("myjino.ru")
         elif apifn == REPORT_IP:
             # AS16276, 213.186.33.0 - 213.186.33.255, OVH SAS
-            fn(cls, "213.186.33.1")
+            fn("213.186.33.1")
         elif apifn == REPORT_URL:
-            fn(cls, "http://muazymaur.tk/maurice/bot.exe")
+            fn("http://muazymaur.tk/maurice/bot.exe")
         elif apifn == SUBMIT_URL:
-            fn(cls, "http://muazymaur.tk/maurice/bot.exe")
+            fn("http://muazymaur.tk/maurice/bot.exe")
         elif apifn == SEARCH:
-            fn(cls, "plugx")
+            fn("plugx")
         elif apifn == QUOTA:
-            fn(cls)
+            fn()
         # get a symbolic return value from fn and print after success
         return f"\"{apifn}\" success"
 

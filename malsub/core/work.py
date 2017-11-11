@@ -25,7 +25,7 @@ def exec(anserv, fn, kwarg):
             for f in as_completed(fut, timeout=None):
                 try:
                     data = f.result()
-                except base.UnsupportedAttr:
+                except base.Unsupported:
                     pass
                 except Exception as e:
                     summ[fut[f].name] = color.redb("unsuccessful")
