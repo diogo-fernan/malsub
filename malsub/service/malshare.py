@@ -25,7 +25,7 @@ class MalShare(Service):
     api_repu = APISpec()
     api_subu = APISpec()
 
-    api_srch = APISpec()
+    api_srch = APISpec("GET", "https://malshare.com", "/api.php?api_key=%s&action=details&hash=%s", cert=False)
     api_quot = APISpec()
 
     # https://malshare.com/doc.php
@@ -49,9 +49,15 @@ class MalShare(Service):
         # data = frmt.jsontree(data)
         return out.pformat(data)
 
-    @Service.unsupported
     def submit_file(self, file: File):
-        pass
+        self.api_subf.data = self.get_apikey(key=True) 
+        api_subfl = APISpec("POST", "https://malshare.com",
+            "/api.php?action=upload&api_key=%s" % self.api_subf.data)
+        api_subfl.file = {
+            "upload": file.fd()
+        } 
+        data, _ = request(api_subfl)
+        return data
 
     @Service.unsupported
     def report_app(self, hash: Hash):
@@ -73,9 +79,11 @@ class MalShare(Service):
     def submit_url(self, url: str):
         pass
 
-    @Service.unsupported
     def search(self, srch: str):
-        pass
+        self.api_srch.fulluri = self.api_srch.fullurl % ( self.get_apikey(key=True), srch)
+        data, _ = request(self.api_srch)
+        data = frmt.jsontree(data)
+        return data
 
     @Service.unsupported
     def quota(self):
