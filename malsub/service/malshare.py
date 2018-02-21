@@ -16,7 +16,7 @@ class MalShare(Service):
     # api_dowf = APISpec("GET", "https://malshare.com", "/api.php", "malshare-bundle.pem")
     api_dowf = APISpec("GET", "https://malshare.com", "/api.php", cert=False)
     api_repf = APISpec("GET", "https://malshare.com", "/api.php", cert=False)
-    api_subf = APISpec()
+    api_subf = APISpec("POST", "https://malshare.com", "/api.php?action=upload&api_key=%s", cert=False)
 
     api_repa = APISpec()
     api_repd = APISpec()
@@ -50,13 +50,11 @@ class MalShare(Service):
         return out.pformat(data)
 
     def submit_file(self, file: File):
-        self.api_subf.data = self.get_apikey(key=True) 
-        api_subfl = APISpec("POST", "https://malshare.com",
-            "/api.php?action=upload&api_key=%s" % self.api_subf.data)
-        api_subfl.file = {
+        self.api_subf.fulluri = self.api_subf.fullurl % (self.get_apikey(key=True) )
+        self.api_subf.file = {
             "upload": file.fd()
         } 
-        data, _ = request(api_subfl)
+        data, _ = request(self.api_subf)
         return data
 
     @Service.unsupported
