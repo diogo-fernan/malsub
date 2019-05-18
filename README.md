@@ -12,7 +12,6 @@ The following services are currently included in *malsub*:
 * [AVCaesar](https://avcaesar.malware.lu/);
 * [Have I been pwned?](https://haveibeenpwned.com/);
 * [Hybrid Analysis](https://www.hybrid-analysis.com/);
-* [Joe Sandbox Cloud](https://www.joesecurity.org/);
 * [MalShare](https://malshare.com/);
 * [maltracker](https://maltracker.net/);
 * [malwr](https://malwr.com/);
@@ -218,3 +217,7 @@ class VirusTotal(Service):
 # Acknowledgments
 
 Thanks to Payload Security for kindly providing access to VxStream.
+
+# Author
+
+[@dfernan__](https://twitter.com/dfernan__)
