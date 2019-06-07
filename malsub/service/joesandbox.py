@@ -15,14 +15,14 @@ class JoeSandbox(Service):
 
     api_dowf = APISpec()
     api_repf = APISpec()
-    api_subf = APISpec("POST", "https://jbxcloud.joesecurity.org", "/api/v2/analysis/submit")
+    api_subf = APISpec("POST", "https://jbxcloud.joesecurity.org", "/api/v2/submission/new")
 
     api_repa = APISpec("POST", "https://jbxcloud.joesecurity.org", "/api/v2/analysis/download")
     api_repd = APISpec()
     api_repi = APISpec()
 
     api_repu = APISpec()
-    api_subu = APISpec("POST", "https://jbxcloud.joesecurity.org", "/api/v2/analysis/submit")
+    api_subu = APISpec("POST", "https://jbxcloud.joesecurity.org", "/api/v2/submission/new")
 
     api_srch = APISpec("POST", "https://jbxcloud.joesecurity.org", "/api/v2/analysis/search")
     api_quot = APISpec("POST", "https://jbxcloud.joesecurity.org", "/api/v2/account/info")
