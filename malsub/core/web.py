@@ -25,7 +25,10 @@ __header = {"Accept": "*/*",
 
 def _request(fn, uri, auth=None, cookie=None, data=None, file=None, header=None,
              json_req=None, param=None, verify=True, bin=False, json=False):
-    if header and type(header) is dict:
+    # Quicksand.io has a broken cert
+    if 'quicksand' in uri:
+        verify = False
+    elif header and type(header) is dict:
         header.update(__header)
     else:
         header = __header

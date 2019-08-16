@@ -1,4 +1,4 @@
-
+i
 --- # malsub API keys
 
 # Service:
@@ -10,9 +10,6 @@
 AVCaesar:
     apikey:
         apikey: <apikey>
-deepviz:
-    apikey:
-        api_key: <apikey>
 HybridAnalysis:
     apikey:
         apikey: <apikey>
