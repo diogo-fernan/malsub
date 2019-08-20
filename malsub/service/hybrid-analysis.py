@@ -1,7 +1,7 @@
 from malsub.service.base import APISpec, Service
 from malsub.core.type import File, Hash
-from malsub.core.web import request, openurl
-from malsub.common import out, frmt
+from malsub.core.web import request
+from malsub.common import frmt
 
 
 class HybridAnalysis(Service):
@@ -39,6 +39,7 @@ class HybridAnalysis(Service):
         self.api_repf.fulluri = self.api_repf.fullurl % hash.hash
         self.api_repf.param = self.get_apikey()
         data, _ = request(self.api_repf)
+        data = frmt.jsondump(data)
         return data
 
     @Service.unsupported
@@ -70,9 +71,11 @@ class HybridAnalysis(Service):
     def search(self, srch: str):
         self.api_srch.param = {"query": srch, **self.get_apikey()}
         data, _ = request(self.api_srch)
+        data = frmt.jsondump(data)
         return data
 
     def quota(self):
         self.api_quot.param = self.get_apikey()
         data, _ = request(self.api_quot)
+        data = frmt.jsondump(data)
         return data
