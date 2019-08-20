@@ -1,7 +1,7 @@
 from malsub.service.base import APISpec, Service
 from malsub.core.type import File, Hash
-from malsub.core.web import request, openurl
-from malsub.common import out, frmt, rw
+from malsub.core.web import request
+from malsub.common import frmt, rw
 
 
 class MalShare(Service):
@@ -14,9 +14,9 @@ class MalShare(Service):
     url = "http://malshare.com/"
 
     # api_dowf = APISpec("GET", "https://malshare.com", "/api.php", "malshare-bundle.pem")
-    api_dowf = APISpec("GET", "https://malshare.com", "/api.php", cert=False)
-    api_repf = APISpec("GET", "https://malshare.com", "/api.php", cert=False)
-    api_subf = APISpec("POST", "https://malshare.com", "/api.php?action=upload&api_key=%s", cert=False)
+    api_dowf = APISpec("GET", "https://malshare.com", "/api.php", cert=True)
+    api_repf = APISpec("GET", "https://malshare.com", "/api.php", cert=True)
+    api_subf = APISpec("POST", "https://malshare.com", "/api.php?action=upload&api_key=%s", cert=True)
 
     api_repa = APISpec()
     api_repd = APISpec()
@@ -25,7 +25,7 @@ class MalShare(Service):
     api_repu = APISpec()
     api_subu = APISpec()
 
-    api_srch = APISpec("GET", "https://malshare.com", "/api.php?api_key=%s&action=details&hash=%s", cert=False)
+    api_srch = APISpec("GET", "https://malshare.com", "/api.php?api_key=%s&action=details&hash=%s", cert=True)
     api_quot = APISpec()
 
     # https://malshare.com/doc.php
@@ -46,11 +46,13 @@ class MalShare(Service):
         self.api_repf.param = {**self.get_apikey(), "action": "details",
                                "hash": hash.hash}
         data, _ = request(self.api_repf)
-        # data = frmt.jsontree(data)
-        return out.pformat(data)
+        #data = frmt.jsontree(data)
+        data = frmt.jsondump(data)
+        return data
+
 
     def submit_file(self, file: File):
-        self.api_subf.fulluri = self.api_subf.fullurl % (self.get_apikey(key=True) )
+        self.api_subf.fulluri = self.api_subf.fullurl % (self.get_apikey(key=True))
         self.api_subf.file = {
             "upload": file.fd()
         } 
@@ -78,9 +80,10 @@ class MalShare(Service):
         pass
 
     def search(self, srch: str):
-        self.api_srch.fulluri = self.api_srch.fullurl % ( self.get_apikey(key=True), srch)
+        self.api_srch.fulluri = self.api_srch.fullurl % (self.get_apikey(key=True), srch)
         data, _ = request(self.api_srch)
-        data = frmt.jsontree(data)
+        #data = frmt.jsontree(data)
+        data = frmt.jsondump(data)
         return data
 
     @Service.unsupported
