@@ -1,7 +1,7 @@
 from malsub.service.base import APISpec, Service
 from malsub.core.type import File, Hash
-from malsub.core.web import request, openurl
-from malsub.common import out, frmt
+from malsub.core.web import request
+from malsub.common import frmt
 
 
 class Metadefender(Service):
@@ -39,15 +39,15 @@ class Metadefender(Service):
         self.api_repf.header = self.get_apikey()
         self.api_repf.fulluri = self.api_repf.fullurl + hash.hash
         data, _ = request(self.api_repf)
-        # data = frmt.jsontree(data)
-        return out.pformat(data)
+        data = frmt.jsondump(data)
+        return data
 
     def submit_file(self, file: File):
         self.api_subf.header = self.get_apikey()
         self.api_subf.file = {"file": file.fd()}
         data, _ = request(self.api_subf)
-        data = frmt.jsontree(data)
-        return out.pformat(data)
+        data = frmt.jsondump(data)
+        return data
 
     def report_app(self, hash: Hash):
         self.api_repa.header = \
@@ -55,8 +55,8 @@ class Metadefender(Service):
                  " ".join(f"{kn} {k}" for kn, k in self.get_apikey().items())}
         self.api_repa.fulluri = self.api_repa.fullurl + hash.hash
         data, _ = request(self.api_repa)
-        data = frmt.jsontree(data)
-        return out.pformat(data)
+        data = frmt.jsondump(data)
+        return data
 
     @Service.unsupported
     def report_dom(self, dom: str):
@@ -68,8 +68,8 @@ class Metadefender(Service):
                 " ".join(f"{kn} {k}" for kn, k in self.get_apikey().items())}
         self.api_repi.fulluri = self.api_repi.fullurl + ip
         data, _ = request(self.api_repi)
-        data = frmt.jsontree(data)
-        return out.pformat(data)
+        data = frmt.jsondump(data)
+        return data
 
     @Service.unsupported
     def report_url(self, url: str):
