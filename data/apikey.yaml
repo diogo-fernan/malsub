@@ -42,11 +42,9 @@ QuickSand:
 SafeBrowsing:
     apikey:
         key: <apikey>
-URLVoid:
+APIVoid:
     apikey:
         apikey: <apikey>
-    user:
-        identifier: <apiuser>
 VirusTotal:
     apikey:
         apikey: <apikey>

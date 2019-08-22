@@ -18,12 +18,12 @@ The following services are currently included in *malsub*:
 * [Metadefender](https://www.metadefender.com/);
 * [OpenPhish](https://openphish.com/);
 * [PDF Examiner](https://www.pdfexaminer.com/);
-* [PhishTank](http://www.phishtank.com/);
+* [PhishTank](https://www.phishtank.com/);
 * [QuickSand](https://www.quicksand.io/);
 * [Safe Browsing](https://developers.google.com/safe-browsing/);
 * [Threat Crowd](https://www.threatcrowd.org/);
 * [ThreatStream](https://www.anomali.com/platform/threatstream);
-* [URLVoid](http://www.urlvoid.com/);
+* [APIVoid](https://www.apivoid.com/);
 * [VirusTotal](https://www.virustotal.com/);
 * [VxStream](https://www.vxstream-sandbox.com/).
 
@@ -208,6 +208,8 @@ class VirusTotal(Service):
 
 # Change History
 
+* *malsub* **20190822**: updated URLVoid module to use APIVoid (vendor migrated API)
+* *malsub* **20190820**: bug fixes
 * *malsub* **20170907**: improved the VirusTotal and VxStream modules.
 * *malsub* **20170607**: added Have I been pwned? and Anomali ThreatStream as intelligence services, and added service exclusion in `-a` with a dash prefix (*e.g.*, `-a all,-ha` excludes Hybrid Analysis).
 * *malsub* **20170329**: added `-H` to output help information about services, fixed AVCaesar, modified URLVoid and made other improvements.
