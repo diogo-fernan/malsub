@@ -20,7 +20,7 @@ class APIVoid(Service):
 
     api_repa = APISpec()
     api_repd = APISpec("GET", "https://endpoint.apivoid.com", "/domainbl/v1/pay-as-you-go/?key=%s&host=%s")
-    api_repi = APISpec()
+    api_repi = APISpec("GET", "https://endpoint.apivoid.com", "/domainbl/v1/pay-as-you-go/?key=%s&ip=%s")
 
     api_repu = APISpec()
     api_subu = APISpec()
@@ -51,9 +51,11 @@ class APIVoid(Service):
         data = frmt.jsondump(data)
         return data
 
-    @Service.unsupported
     def report_ip(self, ip: str):
-        pass
+        self.api_repi.fulluri = self.api_repd.fullurl % (self.get_apikey(key=True), ip)
+        data, _ = request(self.api_repi)
+        data = frmt.jsondump(data)
+        return data
 
     @Service.unsupported
     def report_url(self, url: str):
