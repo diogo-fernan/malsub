@@ -208,7 +208,7 @@ class VirusTotal(Service):
 
 # Change History
 
-* *malsub* **20190822**: updated URLVoid to use APIVoid (vendor migrated API);
+* *malsub* **20190822**: migrated URLVoid to APIVoid (vendor migrated API);
 * *malsub* **20190820**: bug fixes;
 * *malsub* **20170907**: improved the VirusTotal and VxStream modules;
 * *malsub* **20170607**: added Have I been pwned? and Anomali ThreatStream as intelligence services, and added service exclusion in `-a` with a dash prefix (*e.g.*, `-a all,-ha` excludes Hybrid Analysis);
