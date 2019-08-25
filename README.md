@@ -208,12 +208,12 @@ class VirusTotal(Service):
 
 # Change History
 
-* *malsub* **20190822**: updated URLVoid module to use APIVoid (vendor migrated API)
-* *malsub* **20190820**: bug fixes
-* *malsub* **20170907**: improved the VirusTotal and VxStream modules.
-* *malsub* **20170607**: added Have I been pwned? and Anomali ThreatStream as intelligence services, and added service exclusion in `-a` with a dash prefix (*e.g.*, `-a all,-ha` excludes Hybrid Analysis).
-* *malsub* **20170329**: added `-H` to output help information about services, fixed AVCaesar, modified URLVoid and made other improvements.
-* *malsub* **20170319**: made generic improvements, added files as input for report retrieval, added a recurse option and added VxStream (private version of Hybrid Analysis) as a service module.
+* *malsub* **20190822**: updated URLVoid to use APIVoid (vendor migrated API);
+* *malsub* **20190820**: bug fixes;
+* *malsub* **20170907**: improved the VirusTotal and VxStream modules;
+* *malsub* **20170607**: added Have I been pwned? and Anomali ThreatStream as intelligence services, and added service exclusion in `-a` with a dash prefix (*e.g.*, `-a all,-ha` excludes Hybrid Analysis);
+* *malsub* **20170329**: added `-H` to output help information about services, fixed AVCaesar, modified URLVoid and made other improvements;
+* *malsub* **20170319**: made generic improvements, added files as input for report retrieval, added a recurse option and added VxStream (private version of Hybrid Analysis) as a service module;
 * *malsub* **20170305**: first major release.
 
 # Acknowledgments
