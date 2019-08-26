@@ -122,10 +122,14 @@ def run(arg, usage):
             out.error(f"cannot load API keys file \"{meta.APIKEY_PATH}\": {e}")
         else:
             for n, k in apikey.items():
-                if type(k) is not dict or \
-                  k.get("apikey") is None or k.get("apikey") == "":
-                    out.error(f"service \"{anserv[n].name}\" missing "
-                              f"a valid API key \"{k}\"")
+                if type(k) is not dict:
+                    out.error(f"service \"{anserv[n].name}\" missing a valid API key \"{k}\"")
+                elif k.get("apikey") is None:
+                    out.error(f"service \"{anserv[n].name}\" missing a valid API key \"{k}\"")
+                elif k.get("apikey") == "":
+                    out.error(f"service \"{anserv[n].name}\" missing a valid API key \"{k}\"")
+                elif k.get("apikey").get("apikey") == "<apikey>":
+                    out.error(f"service \"{anserv[n].name}\" missing a valid API key \"{k}\"")
                 else:
                     anserv[n].set_apikey(k)
             out.debug("apikey", obj=apikey)
