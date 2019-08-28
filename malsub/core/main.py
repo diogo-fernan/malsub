@@ -128,7 +128,7 @@ def run(arg, usage):
                     out.error(f"service \"{anserv[n].name}\" missing a valid API key \"{k}\"")
                 elif k.get("apikey") == "":
                     out.error(f"service \"{anserv[n].name}\" missing a valid API key \"{k}\"")
-                elif k.get("apikey").get("apikey") == "<apikey>":
+                elif k.get("apikey").get("api_key") == "<apikey>":
                     out.error(f"service \"{anserv[n].name}\" missing a valid API key \"{k}\"")
                 else:
                     anserv[n].set_apikey(k)
