@@ -1,6 +1,6 @@
 from malsub.service.base import APISpec, Service
 from malsub.core.type import File, Hash
-from malsub.core.web import request, openurl
+from malsub.core.web import request
 from malsub.common import out, rw, frmt
 
 
@@ -10,7 +10,7 @@ class AVCaesar(Service):
     api_keyl = 64
 
     desc = f"{name} is an online sandbox and malware repository developed under\n" \
-           f"a project from European Comission and maintained by a CERT in\n" \
+           f"a project from European Commission and maintained by a CERT in\n" \
            f"Luxembourg"
     subs = "public"
     url = "https://avcaesar.malware.lu/"
