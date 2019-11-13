@@ -48,5 +48,10 @@ APIVoid:
 VirusTotal:
     apikey:
         apikey: <apikey>
+ThreatStream:
+    apikey:
+        api_key: <apikey>
+    user:
+        username: <apiuser>
 
 ... # end of API keys
