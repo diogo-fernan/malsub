@@ -134,16 +134,28 @@ def run(arg, usage):
                     anserv[n].set_apikey(k)
             out.debug("apikey", obj=apikey)
 
-    if arg["--verbose"] == 1:
-        out.LEVEL = out.log.verb
-    elif arg["--verbose"] > 1:
-        out.LEVEL = out.log.debug
+    verbosity_levels_dict = {
+        0: out.log.quiet,
+        1: out.log.info,
+        2: out.log.verb,
+        3: out.log.debug
+    }
+
+    # docopt treats numeral values as strings
+    verbosity_level = int(arg["--verbose"])
+    
+    # default to log.info
+    out.LEVEL = verbosity_levels_dict.get(verbosity_level, out.log.info)
+        
     out.debug("arg", obj=arg)
 
     inarg()
     loadserv()
     loadkey()
-    ascii.banner()
+    
+    # Don't print banner on 'quiet' mode
+    if verbosity_level > 0:
+        ascii.banner()
 
     from malsub.common import frmt
     if arg["--servhelp"]:

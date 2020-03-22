@@ -12,11 +12,11 @@ samples, domain names, IP addresses or URLs.
 Options:
   -h, --help  show this help message and exit
 
-  -a, --analysis <service>  character-separated list of services (class or short names) [default: all]
-  -H, --servhelp     show help messages about selected services and exit
-  -p, --pause <num>  wait an interval in seconds between service requests (rate limit) [default: 0]
-  -R, --recursive    recurse on input paths
-  -v, --verbose      display verbose and debug messages
+  -a, --analysis <service>    character-separated list of services (class or short names) [default: all]
+  -H, --servhelp              show help messages about selected services and exit
+  -p, --pause <num>           wait an interval in seconds between service requests (rate limit) [default: 0]
+  -R, --recursive             recurse on input paths
+  -v, --verbose=<level>       choose verbosity level (0: Quiet, 1: Info, 2: Verbose, 3: Debug) [default: 1]
 
 API functions:
   -d, --download  download files or malware samples

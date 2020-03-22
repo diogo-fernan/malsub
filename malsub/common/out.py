@@ -13,6 +13,7 @@ class log:
 
     input = "input"
 
+    quiet = "quiet"
     debug = "debug"
     verb = "verbose"
     info = "info"
