@@ -172,7 +172,7 @@ class VirusTotal(Service):
     # '@Service.unsupported' marks a function as unsupported by a particular
     # service, being ignored by the main application
     @Service.unsupported
-    def download_file(self, hash: Hash):
+    def download_file(self, hash: Hash, directory: str = None):
         # all base functions need to be explicitly declared even if not used by
         # a service
         pass

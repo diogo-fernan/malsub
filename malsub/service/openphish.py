@@ -31,7 +31,7 @@ class OpenPhish(Service):
 
     # https://openphish.com/
 
-    def download_file(self, hash: Hash):
+    def download_file(self, hash: Hash, directory: str = None):
         # self.api_dowf.fulluri = self.api_dowf.url + "/feed.txt"
         data, filename = request(self.api_dowf)
         rw.writef("openphish-community.txt", data)

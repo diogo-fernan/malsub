@@ -30,7 +30,7 @@ class APIVoid(Service):
 
 
     @Service.unsupported
-    def download_file(self, hash: Hash):
+    def download_file(self, hash: Hash, directory: str = None):
         pass
 
     @Service.unsupported

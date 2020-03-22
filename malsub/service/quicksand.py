@@ -32,7 +32,7 @@ class QuickSand(Service):
     # https://github.com/tylabs/quicksand_tools
 
     @Service.unsupported
-    def download_file(self, hash: Hash):
+    def download_file(self, hash: Hash, directory: str = None):
         pass
 
     def report_file(self, hash: Hash):

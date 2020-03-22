@@ -73,7 +73,7 @@ class Service(metaclass=MetaMix):
 
     def __init_subclass__(cls, **kwargs):
         from sys import modules
-        from os.path import basename
+        from os.path import basename, join
         for api in cls.__apiattr + cls.__attr:
             serv = f"class \"{cls.__name__}\" " \
                    f"<class '{cls.__module__}.{cls.__name__}'> in " \
@@ -95,7 +95,7 @@ class Service(metaclass=MetaMix):
         return NotImplemented
 
     @abstractmethod
-    def download_file(self, hash: Hash):
+    def download_file(self, hash: Hash, directory: str = None):
         pass
 
     @abstractmethod

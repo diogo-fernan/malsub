@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 """
-Usage: malsub [-h] [-a <service>] [-H] [-p <num>] [-R] [-v ...]
-              [-d | -f | -q | -r | -s | -t]
+Usage: malsub [-h] [-a <service>] [-H] [-p <num>] [-R] [-v <level>]
+              [-d | -f | -q | -r | -s | -t] [-O <dir>]
               [-i | -o | -l | -u]
               [<input> ...]
 
@@ -19,12 +19,13 @@ Options:
   -v, --verbose=<level>       choose verbosity level (0: Quiet, 1: Info, 2: Verbose, 3: Debug) [default: 1]
 
 API functions:
-  -d, --download  download files or malware samples
-  -f, --find      search for arbitrary terms (input format irrelevant)
-  -q, --quota     retrieve API user quota
-  -r, --report    retrieve submission reports for domains, files, hash values, IP addresses or URLs
-  -s, --submit    submit malware samples or URLs for analysis
-  -t, --test      test API calls by calling each service function as defined with some default values
+  -d, --download       download files or malware samples
+  -f, --find           search for arbitrary terms (input format irrelevant)
+  -O, --output=<dir>   directory in which to save the file
+  -q, --quota          retrieve API user quota
+  -r, --report         retrieve submission reports for domains, files, hash values, IP addresses or URLs
+  -s, --submit         submit malware samples or URLs for analysis
+  -t, --test           test API calls by calling each service function as defined with some default values
 
 Input formats (hash values or files are given as default depending on options):
   -i, --ipaddr  input are IPv4 addresses (applies to '-r' only)

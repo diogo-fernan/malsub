@@ -32,7 +32,7 @@ class Maltracker(Service):
 
     # https://maltracker.net/static/docs/usage/api.html
 
-    def download_file(self, hash: Hash):
+    def download_file(self, hash: Hash, directory: str = None):
         self.api_dowf.fulluri = self.api_dowf.fullurl + hash.hash
         self.api_dowf.param = self.get_apikey()
         try:

@@ -38,8 +38,9 @@ class VirusTotal(Service):
     # https://www.virustotal.com/en/documentation/private-api/
 
 
-    def download_file(self, hash: Hash):
+    def download_file(self, hash: Hash, directory: str = None):
         from requests.exceptions import HTTPError
+        from os import path
         self.api_dowf.param = {**self.get_apikey(), "hash": hash.hash}
         try:
             data, filename = request(self.api_dowf, bin=True)
@@ -49,7 +50,7 @@ class VirusTotal(Service):
             raise HTTPError(e)
         if not filename:
             filename = hash.hash
-        rw.writef(filename, data)
+        rw.writef(filename, data, path=directory)
         return f"downloaded \"{filename}\""
 
     def report_file(self, hash: Hash):

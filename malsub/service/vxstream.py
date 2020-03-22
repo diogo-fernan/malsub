@@ -64,7 +64,7 @@ class VxStream(Service):
         else:
             return False
 
-    def download_file(self, hash: Hash):
+    def download_file(self, hash: Hash, directory: str = None):
         if hash.alg == HASH_SHA256:
             data, flag = self.state(hash)
             if flag:

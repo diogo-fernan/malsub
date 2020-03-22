@@ -13,7 +13,7 @@ pause = 0
 def run(arg, usage):
     def inarg():
         if (arg["--ipaddr"] or arg["--domain"] or arg["--appl"] or arg["--url"]) \
-                and not (arg["--download"] or arg["--find"] or arg["--find"]
+                and not (arg["--download"] or arg["--output"] or arg["--find"] or arg["--find"]
                          or arg["--report"] or arg["--submit"]):
             print(usage)
             exit(0)
@@ -213,7 +213,9 @@ def run(arg, usage):
                         kwarg = {"hash": j}
                     elif arg["--download"]:
                         fn = base.DOWNLOAD_FILE
-                        kwarg = {"hash": j}
+                        # Pass output dir if specified
+                        output_dir = arg["--output"] if arg["--output"] else None
+                        kwarg = {"hash": j, "directory": output_dir }
 
             if fn:  # and kwarg:
                 summ += [[i + 1, util.trunc(j), *exec(anserv, fn, kwarg)]]

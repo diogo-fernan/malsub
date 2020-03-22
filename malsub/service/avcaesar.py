@@ -31,7 +31,7 @@ class AVCaesar(Service):
 
     # https://avcaesar.malware.lu/docs/api
 
-    def download_file(self, hash: Hash):
+    def download_file(self, hash: Hash, directory: str = None):
         self.api_dowf.fulluri = self.api_dowf.fullurl % hash.hash
         self.api_dowf.cookie = self.get_apikey()
         data, filename = request(self.api_dowf, bin=True)

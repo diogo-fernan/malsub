@@ -1,6 +1,6 @@
 from malsub.common import out
 from malsub.core.meta import DOWNL_PATH
-
+import os
 
 def validff(file):
     for f in file:
@@ -41,7 +41,16 @@ def closef(fd):
 def writef(file, data, path=DOWNL_PATH):
     if type(data) is str:
         data = data.encode('utf-8')
-    with openf(path + file, mode='wb') as fd:
+    if path is None:
+        path=DOWNL_PATH
+    # create directory tree if not exists
+    try:
+        os.makedirs(path)
+    except OSError as exc: # Guard against race condition
+        import errno
+        if exc.errno != errno.EEXIST:
+            raise
+    with openf(os.path.join(path, file), mode='wb') as fd:
         fd.write(data)
 
 

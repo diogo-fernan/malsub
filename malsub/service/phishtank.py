@@ -29,7 +29,7 @@ class PhishTank(Service):
 
     # http://www.phishtank.com/developer_info.php
 
-    def download_file(self, hash: Hash):
+    def download_file(self, hash: Hash, directory: str = None):
         self.api_dowf.fulluri = self.api_dowf.fullurl % self.get_apikey(
             key=True)
         data, filename = request(self.api_dowf, bin=True)
