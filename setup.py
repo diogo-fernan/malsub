@@ -10,6 +10,5 @@ setup(
     version="1.2",
     license="see LICENSE",
     packages=find_packages(),
-    scripts=["malsub"],
     url="https://github.com/diogo-fernan/malsub",
 )
