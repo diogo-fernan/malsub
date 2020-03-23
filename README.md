@@ -197,6 +197,27 @@ class VirusTotal(Service):
     # ... (other API functions)
 ```
 
+# Modularizing malsub
+
+Starting with version [1.3](https://github.com/diogo-fernan/malsub/pull/17) *malsub* can be used outside of its own repository as a regular module to make use of its customized modules, classes and functions. An example follows:
+
+```
+import malsub
+from malsub.service import serv as services
+
+hashes = malsub.core.crypto.parse_hashl(
+    "5f782447ff08ee2c36a5d3988dd4774674233f8ea0e1ad09dd766e842d785ddd",
+    "58ffd8200db69cfbc048921e18d79aa1adc894af34db3e1782e53beab3b2d98f")
+
+API_KEY = {'apikey': {'apikey': '...truncated...'}}
+
+vt = services['vt']
+vt.set_apikey(API_KEY)
+
+for h in hashes:
+    vt.download_file(h)
+```
+
 # Future Work
 
 * Documentation;
@@ -208,6 +229,7 @@ class VirusTotal(Service):
 
 # Change History
 
+* *malsub* **20190323**: v1.3, modularization support so that *malsub* can be used as simple module ([#17](https://github.com/diogo-fernan/malsub/pull/17));
 * *malsub* **20190822**: migrated URLVoid to APIVoid (vendor migrated API);
 * *malsub* **20190820**: bug fixes;
 * *malsub* **20170907**: improved the VirusTotal and VxStream modules;
