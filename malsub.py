@@ -72,7 +72,8 @@ from docopt import docopt, printable_usage
 
 from malsub.core import main
 
-exit(main.run(docopt(__doc__), printable_usage(__doc__)))
+if __name__ == '__main__':
+  exit(main.run(docopt(__doc__), printable_usage(__doc__)))
 
 
 # https://malwareconfig.com/api/
