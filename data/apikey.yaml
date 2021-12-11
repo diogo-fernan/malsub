@@ -7,9 +7,6 @@
 #    user: optional entry of the user pair
 #        term: user
 
-AVCaesar:
-    apikey:
-        apikey: <apikey>
 HybridAnalysis:
     apikey:
         api-key: <apikey>
@@ -25,18 +22,12 @@ MalShare:
 maltracker:
     apikey:
         apikey: <apikey>
-Malwr:
-    apikey:
-        api_key: <apikey>
 Metadefender:
     apikey:
         apikey: <apikey>
 PhishTank:
     apikey:
         app_key: <apikey>
-QuickSand:
-    apikey:
-        key: <apikey>
 SafeBrowsing:
     apikey:
         key: <apikey>
@@ -52,4 +43,14 @@ ThreatStream:
     user:
         username: <apiuser>
 
+# Deprecated
+# AVCaesar:
+#     apikey:
+#         apikey: <apikey>
+# Malwr:
+#     apikey:
+#         api_key: <apikey>
+# QuickSand:
+#     apikey:
+#         key: <apikey>
 ... # end of API keys

@@ -9,23 +9,26 @@
 
 The following services are currently included in *malsub*:
 
-* [AVCaesar](https://avcaesar.malware.lu/);
 * [Have I been pwned?](https://haveibeenpwned.com/);
 * [Hybrid Analysis](https://www.hybrid-analysis.com/);
 * [MalShare](https://malshare.com/);
 * [maltracker](https://maltracker.net/);
-* [malwr](https://malwr.com/);
 * [Metadefender](https://www.metadefender.com/);
 * [OpenPhish](https://openphish.com/);
-* [PDF Examiner](https://www.pdfexaminer.com/);
 * [PhishTank](https://www.phishtank.com/);
-* [QuickSand](https://www.quicksand.io/);
 * [Safe Browsing](https://developers.google.com/safe-browsing/);
 * [Threat Crowd](https://www.threatcrowd.org/);
 * [ThreatStream](https://www.anomali.com/platform/threatstream);
 * [APIVoid](https://www.apivoid.com/);
 * [VirusTotal](https://www.virustotal.com/);
 * [VxStream](https://www.vxstream-sandbox.com/).
+
+The following modules were implemented, and declared deprecated due to service inactivity:
+
+* [AVCaesar](https://avcaesar.malware.lu/);
+* [malwr](https://malwr.com/);
+* [PDF Examiner](https://www.pdfexaminer.com/);
+* [QuickSand](https://www.quicksand.io/);
 
 Most of these services require API keys that are generated after registering an account in their respective websites, which need to be specified in the `apikey.yaml` file according to the given structure. Note that some of the already bundled services are limited in supported operations due to the fact that they were developed with free API keys. API keys associated with paid subscriptions are allowed to make additional calls not open to the public and may not be restricted by a given quota. Yet, *malsub* can process multiple input arguments and pause between requests as a workaround for cooldown periods.
 
