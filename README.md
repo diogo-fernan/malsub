@@ -22,8 +22,9 @@ The following services are currently included in *malsub*:
 * [APIVoid](https://www.apivoid.com/);
 * [VirusTotal](https://www.virustotal.com/);
 * [VxStream](https://www.vxstream-sandbox.com/).
+* [JoeSandbox](https://www.joesandbox.com/).
 
-The following modules were implemented, and declared deprecated due to service inactivity:
+The following services were implemented, and declared deprecated due to service inactivity:
 
 * [AVCaesar](https://avcaesar.malware.lu/);
 * [malwr](https://malwr.com/);
