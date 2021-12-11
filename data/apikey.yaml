@@ -12,9 +12,7 @@ AVCaesar:
         apikey: <apikey>
 HybridAnalysis:
     apikey:
-        apikey: <apikey>
-    user:
-        secret: <apiuser>
+        api-key: <apikey>
 JoeSandbox:
     apikey:
         apikey: <apikey>
