@@ -14,7 +14,7 @@ class HybridAnalysis(Service):
 
     desc = (
         f"{name} features in-depth static and dynamic analysis techniques\n"
-        f"within sanboxed environments and is a malware repository created by\n"
+        f"within sandboxed environments and is a malware repository created by\n"
         f"Payload Security"
     )
     subs = "public/private"
@@ -48,7 +48,7 @@ class HybridAnalysis(Service):
                 return f'sample "{hash}" not found'
             raise HTTPError(e)
 
-        # The returned filename contains bin.sample.gz suffix, so we not using it.
+        # The returned filename contains bin.sample.gz suffix, so we are not using it.
         filename = hash.hash
 
         # If the response is json, so some error occured (contains 'sample not found' error)
