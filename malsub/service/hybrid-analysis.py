@@ -1,7 +1,10 @@
+import json, gzip
+from requests.exceptions import HTTPError
+
 from malsub.service.base import APISpec, Service
 from malsub.core.type import File, Hash
 from malsub.core.web import request
-from malsub.common import frmt
+from malsub.common import frmt, rw
 
 
 class HybridAnalysis(Service):
@@ -9,42 +12,78 @@ class HybridAnalysis(Service):
     sname = "ha"
     api_keyl = 25
 
-    desc = f"{name} features in-depth static and dynamic analysis techniques\n" \
-           f"within sanboxed environments and is a malware repository created by\n" \
-           f"Payload Security"
+    desc = (
+        f"{name} features in-depth static and dynamic analysis techniques\n"
+        f"within sandboxed environments and is a malware repository created by\n"
+        f"Payload Security"
+    )
     subs = "public/private"
-    url = "https://www.hybrid-analysis.com/"
+    url = "https://www.hybrid-analysis.com"
 
-    api_dowf = APISpec()
-    api_repf = APISpec("GET", "https://www.hybrid-analysis.com", "/api/scan/%s")
-    api_subf = APISpec("POST", "https://www.hybrid-analysis.com", "/api/submit")
+    api_dowf = APISpec("GET", url, "/api/v2/overview/%s/sample")
+    api_repf = APISpec("GET", url, "/api/v2/overview/%s")
+    api_subf = APISpec("POST", url, "/api/v2/submit/file")
 
     api_repa = APISpec()
     api_repd = APISpec()
     api_repi = APISpec()
 
     api_repu = APISpec()
-    api_subu = APISpec()
+    api_subu = APISpec("POST", url, "/api/v2/submit/url")
 
-    api_srch = APISpec("GET", "https://www.hybrid-analysis.com", "/api/search")
-    api_quot = APISpec("GET", "https://www.hybrid-analysis.com", "/api/quota")
+    api_srch = APISpec()
+    api_quot = APISpec("GET", url, "/api/v2/key/submission-quota")
 
-    # https://www.hybrid-analysis.com/apikeys/info
-
-    @Service.unsupported
     def download_file(self, hash: Hash):
-        pass
+        if hash.alg != "sha256":
+            return f"wrong params. should be given sha256"
+        self.api_dowf.fulluri = self.api_dowf.fullurl % hash.hash
+        self.api_dowf.header = {
+            **self.get_apikey(),
+        }
+        try:
+            data, _ = request(self.api_dowf, bin=True)
+        except HTTPError as e:
+            if e.response.status_code == 404:
+                return f'sample "{hash}" not found'
+            raise HTTPError(e)
+
+        # The returned filename contains bin.sample.gz suffix, so we are not using it.
+        filename = hash.hash
+
+        # If the response is json, so some error occured (contains 'sample not found' error)
+        try:
+            j = json.loads(data)
+            return f'error {j["message"]}'
+        except:
+            pass
+
+        try:
+            data = gzip.decompress(data)
+        except:
+            return f'failed unzipping "{hash.hash}"'
+
+        rw.writef(filename, data)
+        return f'downloaded "{filename}"'
 
     def report_file(self, hash: Hash):
+        if hash.alg != "sha256":
+            return f"wrong params. should be given sha256"
         self.api_repf.fulluri = self.api_repf.fullurl % hash.hash
-        self.api_repf.param = self.get_apikey()
+        self.api_repf.header = {
+            **self.get_apikey(),
+        }
         data, _ = request(self.api_repf)
         data = frmt.jsondump(data)
         return data
 
-    @Service.unsupported
     def submit_file(self, file: File):
-        self.api_subf.data = {"file": file.fd(), **self.get_apikey()}
+        # Defaullt environment for Windows 7 64bit
+        self.api_subf.data = {"environment_id": 120}
+        self.api_subf.file = {"file": file.fd()}
+        self.api_subf.header = {
+            **self.get_apikey(),
+        }
         data, _ = request(self.api_subf)
         return data
 
@@ -64,18 +103,23 @@ class HybridAnalysis(Service):
     def report_url(self, url: str):
         pass
 
-    @Service.unsupported
     def submit_url(self, url: str):
-        pass
-
-    def search(self, srch: str):
-        self.api_srch.param = {"query": srch, **self.get_apikey()}
-        data, _ = request(self.api_srch)
-        data = frmt.jsondump(data)
+        # Defaullt environment for Windows 7 64bit
+        self.api_subu.data = {"url": url, "environment_id": 120}
+        self.api_subu.header = {
+            **self.get_apikey(),
+        }
+        data, _ = request(self.api_subu)
         return data
 
+    @Service.unsupported
+    def search(self, srch: str):
+        pass
+
     def quota(self):
-        self.api_quot.param = self.get_apikey()
+        self.api_quot.header = {
+            **self.get_apikey(),
+        }
         data, _ = request(self.api_quot)
         data = frmt.jsondump(data)
         return data
