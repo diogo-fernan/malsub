@@ -42,15 +42,4 @@ ThreatStream:
         api_key: <apikey>
     user:
         username: <apiuser>
-
-# Deprecated
-# AVCaesar:
-#     apikey:
-#         apikey: <apikey>
-# Malwr:
-#     apikey:
-#         api_key: <apikey>
-# QuickSand:
-#     apikey:
-#         key: <apikey>
 ... # end of API keys
