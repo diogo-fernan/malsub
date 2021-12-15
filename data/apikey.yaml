@@ -42,4 +42,7 @@ ThreatStream:
         api_key: <apikey>
     user:
         username: <apiuser>
+Triage:
+    apikey:
+        apikey: <apikey>
 ... # end of API keys
