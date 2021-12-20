@@ -66,7 +66,6 @@ class MWDB(Service):
     def report_file(self, hash: Hash):
         self.api_repf.fulluri = self.api_repf.fullurl % hash.hash
         self.api_repf.header = {"Authorization": f"Bearer {self.get_apikey(key=True)}"}
-        print(self.api_repf.header)
         data, _ = request(self.api_repf)
         return frmt.jsondump(data)
 
