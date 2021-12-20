@@ -48,13 +48,9 @@ class ServiceList:
             s.setfn(fn)
 
     def __add__(self, other):
-        # insert sort here
-        # return ServiceList(self.list + [other])
         return ServiceList(sorted(self.list + [other]))
 
     def __iadd__(self, other):
-        # insert sort here
-        # self.list += [other]
         self.list = sorted(self.list + [other])
         return self
 
@@ -79,7 +75,6 @@ class ServiceList:
         return len(self.list)
 
     def __repr__(self):
-        # return repr(self.list)
         return self.list
 
     def __str__(self):

@@ -1,6 +1,6 @@
 from malsub.service.base import APISpec, Service
 from malsub.core.type import File, Hash
-from malsub.core.web import request, openurl
+from malsub.core.web import request
 from malsub.common import out, frmt, rw
 
 
@@ -9,14 +9,15 @@ class Maltracker(Service):
     sname = "mt"
     api_keyl = 64
 
-    desc = f"{name} is a proprietary sanboxed environment created by\n" \
-           f"AnubisNetworks for dynamic analysis incorporating threat\n" \
-           f"intelligence"
+    desc = (
+        f"{name} is a proprietary sanboxed environment created by\n"
+        f"AnubisNetworks for dynamic analysis incorporating threat\n"
+        f"intelligence"
+    )
     subs = "public"
     url = "https://maltracker.net/"
 
     api_dowf = APISpec("GET", "http://api.maltracker.net:4700", "/sample/get/")
-    # /report/min/get/ # /sample/info/
     api_repf = APISpec("GET", "http://api.maltracker.net:4700", "/report/get/")
     api_subf = APISpec("POST", "http://api.maltracker.net:4700", "/task/submit/file/")
 
@@ -37,14 +38,12 @@ class Maltracker(Service):
         self.api_dowf.param = self.get_apikey()
         try:
             data, filename = request(self.api_dowf, bin=True)
-            # out.debug(util.hexdump(data))
             if not filename:
                 filename = hash.hash
             rw.writef(filename, data)
-            return f"downloaded \"{filename}\""
+            return f'downloaded "{filename}"'
         except Exception as e:
             return f"sample not found: {e}"
-
 
     def report_file(self, hash: Hash):
         self.api_repf.fulluri = self.api_repf.fullurl + hash.hash
@@ -69,7 +68,6 @@ class Maltracker(Service):
         self.api_repd.param = self.get_apikey()
         data, _ = request(self.api_repd)
         data = frmt.jsontree(data)
-        # web.openurl(data["permalink"])
         return out.pformat(data)
 
     def report_ip(self, ip: str):
@@ -77,7 +75,6 @@ class Maltracker(Service):
         self.api_repi.param = self.get_apikey()
         data, _ = request(self.api_repi)
         data = frmt.jsontree(data)
-        # web.openurl(data["permalink"])
         return out.pformat(data)
 
     @Service.unsupported
@@ -92,7 +89,6 @@ class Maltracker(Service):
         self.api_subu.data = {"url": url, **self.get_apikey()}
         data, _ = request(self.api_subu)
         data = frmt.jsontree(data)
-        # web.openurl(data["permalink"])
         return out.pformat(data)
 
     @Service.unsupported

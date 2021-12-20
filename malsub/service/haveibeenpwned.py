@@ -1,6 +1,6 @@
 from malsub.service.base import APISpec, Service
 from malsub.core.type import File, Hash
-from malsub.core.web import request, openurl
+from malsub.core.web import request
 from malsub.common import out, frmt
 
 
@@ -51,7 +51,7 @@ class HaveIbeenpwned(Service):
         data, _ = request(self.api_repd)
         data = frmt.jsontree(data)
         if data == []:
-            return f"domain \"{dom}\" not found"
+            return f'domain "{dom}" not found'
         return out.pformat(data)
 
     @Service.unsupported
@@ -68,13 +68,13 @@ class HaveIbeenpwned(Service):
 
     def search(self, srch: str):
         from requests.exceptions import HTTPError
-        self.api_srch.fulluri = self.api_srch.fullurl % \
-                                ("breachedaccount", srch)
+
+        self.api_srch.fulluri = self.api_srch.fullurl % ("breachedaccount", srch)
         try:
             data, _ = request(self.api_srch)
         except HTTPError as e:
             if e.response.status_code == 404:
-                return f"account \"{srch}\" not found"
+                return f'account "{srch}" not found'
             raise HTTPError(e)
         data = frmt.jsontree(data)
         return out.pformat(data)

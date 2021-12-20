@@ -6,7 +6,7 @@ __termwidth = get_terminal_size().columns
 def trunc(string, width=None, sep=" (...) "):
     string = str(string)
     if not width:
-        width = int(__termwidth * .60)
+        width = int(__termwidth * 0.60)
     if len(string) <= width:
         return string
     if width == len(sep):
@@ -17,13 +17,12 @@ def trunc(string, width=None, sep=" (...) "):
     return string[:dif1] + sep + ("", string[-dif2:])[dif2 > 0]
 
 
-def hexdump(byte, offset=0x00, sep='.', width=16):
-    # pip3 install hexdump
-    # hexdump.hexdump(b"data")
+def hexdump(byte, offset=0x00, sep=".", width=16):
     from string import printable
+
     byte = bytearray(byte)
     dmp = ""
-    for x in [byte[i:i + width] for i in range(len(byte)) if i % 16 == 0]:
+    for x in [byte[i : i + width] for i in range(len(byte)) if i % 16 == 0]:
         txt = ""
         dmp += "{:#08x}  ".format(offset)
         for i, j in enumerate(x):
@@ -37,7 +36,7 @@ def hexdump(byte, offset=0x00, sep='.', width=16):
 
 
 def asciibin(string):
-    return " ".join("{:08b}".format(ord(i), 'b') for i in string)
+    return " ".join("{:08b}".format(ord(i), "b") for i in string)
 
 
 def rand01():
@@ -46,14 +45,15 @@ def rand01():
 
 def rand(min, max):
     from random import random, uniform
-    # return min + uniform(0, 1) * (max - min)
+
     return min + random() * (max - min)
 
 
 def randc(min, max):
     from struct import Struct
     from random import randint
-    imax = 2 ** (Struct('i').size * 8 - 1) - 1
+
+    imax = 2 ** (Struct("i").size * 8 - 1) - 1
     return min + randint(0, imax) % (max - min + 1)
 
 

@@ -33,16 +33,18 @@ class MetaAbstract(ABCMeta):
                     if callable(method_base):
                         sigc, sigp = signature(method), signature(method_base)
                         if sigp != sigc:
-                            out.error(f"class \"{clsname}\" has mismatching "
-                                      f"method signatures for "
-                                      f"\"{method_name}{sigc}\" "
-                                      f"(should be \"{method_name}{sigp}\")")
+                            out.error(
+                                f'class "{clsname}" has mismatching '
+                                f"method signatures for "
+                                f'"{method_name}{sigc}" '
+                                f'(should be "{method_name}{sigp}")'
+                            )
                 except AttributeError as a:
                     continue
         return super(MetaAbstract, cls).__new__(cls, clsname, base, dict)
 
 
-MetaMix = type('MetaMix', (Singleton, MetaAbstract), {})
+MetaMix = type("MetaMix", (Singleton, MetaAbstract), {})
 
 
 class Service(metaclass=MetaMix):
@@ -60,11 +62,19 @@ class Service(metaclass=MetaMix):
     __api_srch = "api_srch"
     __api_quot = "api_quot"
 
-    __attr = ["api_keyl", "desc", "name", "sname", "subs", 'url']
-    __apiattr = [__api_dowf, __api_subf, __api_repf,
-                 __api_repa, __api_repd, __api_repi,
-                 __api_subu, __api_repu,
-                 __api_srch, __api_quot]
+    __attr = ["api_keyl", "desc", "name", "sname", "subs", "url"]
+    __apiattr = [
+        __api_dowf,
+        __api_subf,
+        __api_repf,
+        __api_repa,
+        __api_repd,
+        __api_repi,
+        __api_subu,
+        __api_repu,
+        __api_srch,
+        __api_quot,
+    ]
 
     __apikey = None
 
@@ -74,18 +84,23 @@ class Service(metaclass=MetaMix):
     def __init_subclass__(cls, **kwargs):
         from sys import modules
         from os.path import basename
+
         for api in cls.__apiattr + cls.__attr:
-            serv = f"class \"{cls.__name__}\" " \
-                   f"<class '{cls.__module__}.{cls.__name__}'> in " \
-                   f"\"{basename(modules[cls.__module__].__file__)}\""
+            serv = (
+                f'class "{cls.__name__}" '
+                f"<class '{cls.__module__}.{cls.__name__}'> in "
+                f'"{basename(modules[cls.__module__].__file__)}"'
+            )
             if not hasattr(cls, api) or callable(getattr(cls, api)):
-                out.error(f"{serv} has missing or callable attribute \"{api}\"")
+                out.error(f'{serv} has missing or callable attribute "{api}"')
             if api in cls.__apiattr:
                 apispec = getattr(cls, api)
                 if apispec.__class__ != APISpec:
-                    out.error(f"{serv} has malformed attribute \"{api}\" "
-                              f"of \"{apispec.__class__}\" "
-                              f"(should be of \"{APISpec}\")")
+                    out.error(
+                        f'{serv} has malformed attribute "{api}" '
+                        f'of "{apispec.__class__}" '
+                        f'(should be of "{APISpec}")'
+                    )
         return super().__init_subclass__(**kwargs)
 
     def __repr__(self):
@@ -136,9 +151,6 @@ class Service(metaclass=MetaMix):
 
     @classmethod
     def set_apikey(cls, apikey: dict):
-        # cls.__apikey = APIKey(**apikey)
-        # if not (regex.ishex(cls.__apikey.key) and len(cls.__apikey.key) == cls.api_keyl):
-        # 	out.error(f"class {cls} has an invalid API key \"{apikey}\"")
         cls.__apikey = APIKey(**apikey)
 
     @classmethod
@@ -184,12 +196,11 @@ class Service(metaclass=MetaMix):
         elif apifn == QUOTA:
             fn()
         # get a symbolic return value from fn and print after success
-        return f"\"{apifn}\" success"
+        return f'"{apifn}" success'
 
     @classmethod
     def help(cls):
-        fn = [fn for fn in cls.__fn if
-              not hasattr(getattr(cls, fn), UNSUPPORTED)]
+        fn = [fn for fn in cls.__fn if not hasattr(getattr(cls, fn), UNSUPPORTED)]
         return [cls.desc, cls.subs, cls.url, ",".join(fn)]
 
     @staticmethod
@@ -202,28 +213,20 @@ class Service(metaclass=MetaMix):
         setattr(cls, UNUSED, True)
         return cls
 
-    __fn = [download_file.__name__,
-            report_file.__name__,
-            submit_file.__name__,
-            report_app.__name__,
-            report_dom.__name__,
-            report_ip.__name__,
-            report_url.__name__,
-            submit_url.__name__,
-            search.__name__,
-            quota.__name__]
+    __fn = [
+        download_file.__name__,
+        report_file.__name__,
+        submit_file.__name__,
+        report_app.__name__,
+        report_dom.__name__,
+        report_ip.__name__,
+        report_url.__name__,
+        submit_url.__name__,
+        search.__name__,
+        quota.__name__,
+    ]
 
     __fnmap = dict(zip(__fn, __apiattr))
-    # __fnmap = {download_file.__name__: __api_dowf,
-    #            report_file.__name__: __api_repf,
-    #            submit_file.__name__: __api_subf,
-    #            report_app.__name__: __api_repa,
-    #            report_dom.__name__: __api_repd,
-    #            report_ip.__name__: __api_repi,
-    #            report_url.__name__: __api_repu,
-    #            submit_url.__name__: __api_subu,
-    #            search.__name__: __api_srch,
-    #            quota.__name__: __api_quot}
 
 
 class APIKey:
@@ -250,8 +253,11 @@ class APISpec:
         self.fullurl = self.url + self.uri
         self.fulluri = self.fullurl
         if cert:
-            self.verify = DATA_PATH + cert \
-                if type(cert) is str and rw.tryf(DATA_PATH + cert) else True
+            self.verify = (
+                DATA_PATH + cert
+                if type(cert) is str and rw.tryf(DATA_PATH + cert)
+                else True
+            )
         else:
             self.verify = False if cert == False else True
         self.auth = None
@@ -263,9 +269,11 @@ class APISpec:
         self.param = None
 
     def __str__(self):
-        return f"{self.method} {self.fulluri} {self.verify} \n" \
-               f"{self.auth} {self.cookie} {self.data} {self.file} {self.header} " \
-               f"{self.param}"
+        return (
+            f"{self.method} {self.fulluri} {self.verify} \n"
+            f"{self.auth} {self.cookie} {self.data} {self.file} {self.header} "
+            f"{self.param}"
+        )
 
 
 UNUSED = "_unused"

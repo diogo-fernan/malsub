@@ -1,7 +1,7 @@
 from malsub.service.base import APISpec, Service
 from malsub.core.type import File, Hash
 from malsub.core.meta import MALSUB_NAME, MALSUB_VERSION
-from malsub.core.web import request, openurl
+from malsub.core.web import request
 from malsub.common import out, frmt
 
 
@@ -10,8 +10,10 @@ class SafeBrowsing(Service):
     sname = "sb"
     api_keyl = 39
 
-    desc = f"{name} is an online database of malicious URLs updated in real-time\n" \
-           f"by Google"
+    desc = (
+        f"{name} is an online database of malicious URLs updated in real-time\n"
+        f"by Google"
+    )
     subs = "public"
     url = "https://safebrowsing.google.com/"
 
@@ -23,7 +25,9 @@ class SafeBrowsing(Service):
     api_repd = APISpec()
     api_repi = APISpec()
 
-    api_repu = APISpec("POST", "https://safebrowsing.googleapis.com", "/v4/threatMatches:find")
+    api_repu = APISpec(
+        "POST", "https://safebrowsing.googleapis.com", "/v4/threatMatches:find"
+    )
     api_subu = APISpec()
 
     api_srch = APISpec("GET", "https://safebrowsing.googleapis.com", "/v4/threatLists")
@@ -57,12 +61,9 @@ class SafeBrowsing(Service):
 
     def report_url(self, url: str):
         self.api_repu.param = self.get_apikey()
-        self.api_repu.header = {'Content-Type': 'application/json'}
+        self.api_repu.header = {"Content-Type": "application/json"}
         self.api_repu.json = {
-            "client": {
-                "clientId": MALSUB_NAME,
-                "clientVersion": MALSUB_VERSION
-            },
+            "client": {"clientId": MALSUB_NAME, "clientVersion": MALSUB_VERSION},
             "threatInfo": {
                 # "POTENTIALLY_HARMFUL_APPLICATION"
                 # "THREAT_TYPE_UNSPECIFIED"
@@ -70,10 +71,8 @@ class SafeBrowsing(Service):
                 "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING"],
                 "platformTypes": ["ALL_PLATFORMS"],
                 "threatEntryTypes": ["URL"],
-                "threatEntries": [
-                    {"url": url}
-                ]
-            }
+                "threatEntries": [{"url": url}],
+            },
         }
         data, _ = request(self.api_repu)
         data = frmt.jsontree(data)
@@ -85,7 +84,7 @@ class SafeBrowsing(Service):
 
     def search(self, srch: str):
         self.api_srch.param = self.get_apikey()
-        self.api_srch.header = {'Content-Type': 'application/json'}
+        self.api_srch.header = {"Content-Type": "application/json"}
         data, _ = request(self.api_srch)
         data = frmt.jsontree(data)
         return out.pformat(data)

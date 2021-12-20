@@ -19,8 +19,7 @@ def jsonhoriz(json):
 def jsonvert(json):
     tree = _jsonload(json)
     rows = [[k, tree[k]] for k in tree]
-    header = [f"column ({len([i for i in rows])})"] + [
-        "value"]  # * _depth(tree)
+    header = [f"column ({len([i for i in rows])})"] + ["value"]  # * _depth(tree)
     return AsciiTable([header, *rows]).table
 
 
@@ -31,12 +30,11 @@ def _jsonload(json):
         try:
             tree = loads(json)
         except Exception as e:
-            out.error(f"type \"{type(json)}\" invalid for parsing through JSON:"
-                      f" {e}")
+            out.error(f'type "{type(json)}" invalid for parsing through JSON:' f" {e}")
         else:
             return tree
     else:
-        out.debug(f"type \"{type(json)}\" invalid for parsing through JSON")
+        out.debug(f'type "{type(json)}" invalid for parsing through JSON')
 
 
 def jsontree(json, depth=-1):
@@ -77,9 +75,8 @@ def _depth(obj):
 
 
 def xmlparse(xml):
-    # import xml.etree.ElementTree
-    # xml = ElementTree.fromstring(xml)
     from xml.dom.minidom import parseString
-    xml = parseString(xml).toprettyxml(indent='  ')
+
+    xml = parseString(xml).toprettyxml(indent="  ")
     xml = "\n".join([s.rstrip() for s in xml.splitlines() if s.strip()])
     return xml

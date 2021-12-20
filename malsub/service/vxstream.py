@@ -1,7 +1,7 @@
 from malsub.service.base import APISpec, Service
 from malsub.core.type import File, Hash, HASH_SHA256
 from malsub.core.web import request, openurl
-from malsub.common import out, frmt, rw
+from malsub.common import rw
 
 
 class VxStream(Service):
@@ -9,9 +9,11 @@ class VxStream(Service):
     sname = "vs"
     api_keyl = 25
 
-    desc = f"{name} features in-depth static and dynamic analysis techniques\n" \
-           f"within sanboxed environments and is a malware repository created by\n" \
-           f"Payload Security"
+    desc = (
+        f"{name} features in-depth static and dynamic analysis techniques\n"
+        f"within sanboxed environments and is a malware repository created by\n"
+        f"Payload Security"
+    )
     subs = "private"
     url = "https://www.vxstream-sandbox.com/"
 
@@ -53,11 +55,10 @@ class VxStream(Service):
             self.api_stat.param = {
                 "environmentId": 100,
                 "type": "json",
-                **self.get_apikey()
+                **self.get_apikey(),
             }
             data, _ = request(self.api_stat, json=True)
-            if data["response_code"] == 0 and \
-                            data["response"]["state"] == "SUCCESS":
+            if data["response_code"] == 0 and data["response"]["state"] == "SUCCESS":
                 return data, True
             else:
                 return data, False
@@ -72,14 +73,14 @@ class VxStream(Service):
                 self.api_dowf.param = {
                     "environmentId": 100,
                     "type": "bin",
-                    **self.get_apikey()
+                    **self.get_apikey(),
                 }
                 filename = hash.hash + ".gz"
                 data, _ = request(self.api_dowf, bin=True)
                 rw.writef(filename, data)
-                return f"downloaded \"{filename}\""
+                return f'downloaded "{filename}"'
             else:
-                return f"sample \"{hash}\" private or not found"
+                return f'sample "{hash}" private or not found'
         else:
             return f"{hash.alg} is not SHA-256"
 
@@ -91,7 +92,7 @@ class VxStream(Service):
                 self.api_repf.param = {
                     "environmentId": 100,
                     "type": "json",
-                    **self.get_apikey()
+                    **self.get_apikey(),
                 }
                 data, _ = request(self.api_repf)
             return data
@@ -104,9 +105,7 @@ class VxStream(Service):
             "environmentId": 100
             # "nosharevt": "true"
         }
-        self.api_subf.file = {
-            "file": file.fd()
-        }
+        self.api_subf.file = {"file": file.fd()}
         data, _ = request(self.api_subf)
         return data
 
@@ -131,14 +130,16 @@ class VxStream(Service):
             self.api_stat.param = {
                 "environmentId": 100,
                 "type": "json",
-                **self.get_apikey()
+                **self.get_apikey(),
             }
             data, _ = request(self.api_stat, json=True)
-            if data["response_code"] == 0 and \
-                            data["response"]["state"] == "SUCCESS":
+            if data["response_code"] == 0 and data["response"]["state"] == "SUCCESS":
                 self.api_repu.fulluri = self.api_repu.fullurl % hash.hash
-                self.api_repu.param = {"environmentId": 100,
-                                       "type": "json", **self.get_apikey()}
+                self.api_repu.param = {
+                    "environmentId": 100,
+                    "type": "json",
+                    **self.get_apikey(),
+                }
                 data, _ = request(self.api_repu)
             return data
         else:
@@ -146,19 +147,13 @@ class VxStream(Service):
 
     def submit_url(self, url: str):
         self.api_subu.auth = self.get_apikey(key=True, user=True)
-        self.api_subu.data = {
-            "analyzeurl": url,
-            "environmentId": 100
-        }
+        self.api_subu.data = {"analyzeurl": url, "environmentId": 100}
         self.api_subu.param = self.get_apikey()
         data, _ = request(self.api_subu)
         return data
 
     def search(self, srch: str):
-        self.api_srch.param = {
-            "query": srch,
-            **self.get_apikey()
-        }
+        self.api_srch.param = {"query": srch, **self.get_apikey()}
         data, _ = request(self.api_srch)
         return data
 

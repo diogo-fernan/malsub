@@ -9,8 +9,10 @@ class APIVoid(Service):
     sname = "av"
     api_keyl = 40
 
-    desc = f"{name} is a pay-as-you-go blacklist and reputation-based scanning engine\n" \
-           f"for URLs"
+    desc = (
+        f"{name} is a pay-as-you-go blacklist and reputation-based scanning engine\n"
+        f"for URLs"
+    )
     subs = "private"
     url = "https://www.apivoid.com/"
 
@@ -19,15 +21,26 @@ class APIVoid(Service):
     api_subf = APISpec()
 
     api_repa = APISpec()
-    api_repd = APISpec("GET", "https://endpoint.apivoid.com", "/domainbl/v1/pay-as-you-go/?key=%s&host=%s")
-    api_repi = APISpec("GET", "https://endpoint.apivoid.com", "/domainbl/v1/pay-as-you-go/?key=%s&ip=%s")
+    api_repd = APISpec(
+        "GET",
+        "https://endpoint.apivoid.com",
+        "/domainbl/v1/pay-as-you-go/?key=%s&host=%s",
+    )
+    api_repi = APISpec(
+        "GET",
+        "https://endpoint.apivoid.com",
+        "/domainbl/v1/pay-as-you-go/?key=%s&ip=%s",
+    )
 
     api_repu = APISpec()
     api_subu = APISpec()
 
     api_srch = APISpec()
-    api_quot = APISpec("GET", "https://endpoint.apivoid.com", "/domainbl/v1/pay-as-you-go/?key=%s&stats")
-
+    api_quot = APISpec(
+        "GET",
+        "https://endpoint.apivoid.com",
+        "/domainbl/v1/pay-as-you-go/?key=%s&stats",
+    )
 
     @Service.unsupported
     def download_file(self, hash: Hash):

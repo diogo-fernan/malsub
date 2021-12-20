@@ -1,6 +1,6 @@
 from malsub.service.base import APISpec, Service
 from malsub.core.type import File, Hash
-from malsub.core.web import request, quoteurl, openurl
+from malsub.core.web import request, quoteurl
 from malsub.common import out, rw, frmt
 
 
@@ -13,7 +13,9 @@ class PhishTank(Service):
     subs = "public"
     url = "https://www.phishtank.com/"
 
-    api_dowf = APISpec("GET", "http://data.phishtank.com", "/data/%s/online-valid.json.gz")
+    api_dowf = APISpec(
+        "GET", "http://data.phishtank.com", "/data/%s/online-valid.json.gz"
+    )
     api_repf = APISpec()
     api_subf = APISpec()
 
@@ -30,12 +32,11 @@ class PhishTank(Service):
     # http://www.phishtank.com/developer_info.php
 
     def download_file(self, hash: Hash):
-        self.api_dowf.fulluri = self.api_dowf.fullurl % self.get_apikey(
-            key=True)
+        self.api_dowf.fulluri = self.api_dowf.fullurl % self.get_apikey(key=True)
         data, filename = request(self.api_dowf, bin=True)
         if filename:
             rw.writef("phishtank-" + filename, data)
-            return f"downloaded \"phishtank-{filename}\""
+            return f'downloaded "phishtank-{filename}"'
         else:
             return "unsuccess"
 
@@ -60,8 +61,11 @@ class PhishTank(Service):
         pass
 
     def report_url(self, url: str):
-        self.api_repu.data = {"url": quoteurl(url), "format": "json",
-                              **self.get_apikey()}
+        self.api_repu.data = {
+            "url": quoteurl(url),
+            "format": "json",
+            **self.get_apikey(),
+        }
         data, _ = request(self.api_repu)
         data = frmt.jsontree(data)
         return out.pformat(data)

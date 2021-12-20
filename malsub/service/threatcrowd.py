@@ -1,6 +1,6 @@
 from malsub.service.base import APISpec, Service
 from malsub.core.type import File, Hash
-from malsub.core.web import request, openurl
+from malsub.core.web import request
 from malsub.common import out, frmt
 
 
@@ -9,8 +9,10 @@ class ThreatCrowd(Service):
     sname = "tc"
     api_keyl = 32
 
-    desc = f"{name} is an open-source threat intelligence for malware maintained\n" \
-           f"by AlienVault"
+    desc = (
+        f"{name} is an open-source threat intelligence for malware maintained\n"
+        f"by AlienVault"
+    )
     subs = "public"
     url = "https://www.threatcrowd.org/"
 
@@ -19,13 +21,17 @@ class ThreatCrowd(Service):
     api_subf = APISpec()
 
     api_repa = APISpec()
-    api_repd = APISpec("GET", "http://www.threatcrowd.org", "/searchApi/v2/domain/report/")
+    api_repd = APISpec(
+        "GET", "http://www.threatcrowd.org", "/searchApi/v2/domain/report/"
+    )
     api_repi = APISpec("GET", "http://www.threatcrowd.org", "/searchApi/v2/ip/report/")
 
     api_repu = APISpec()
     api_subu = APISpec()
 
-    api_srch = APISpec("GET", "http://www.threatcrowd.org",  "/searchApi/v2/antivirus/report/")
+    api_srch = APISpec(
+        "GET", "http://www.threatcrowd.org", "/searchApi/v2/antivirus/report/"
+    )
     api_quot = APISpec()
 
     # https://www.threatcrowd.org/

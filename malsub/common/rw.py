@@ -5,8 +5,8 @@ from malsub.core.meta import DOWNL_PATH
 def validff(file):
     for f in file:
         try:
-            with open(f, mode='rb') as fd:
-                out.debug(f"file \"{f}\" valid")
+            with open(f, mode="rb") as fd:
+                out.debug(f'file "{f}" valid')
         except:
             return False
     return True
@@ -14,21 +14,21 @@ def validff(file):
 
 def tryf(file):
     try:
-        with open(file, mode='rb') as fd:
-            out.debug(f"file \"{file}\" valid")
+        with open(file, mode="rb") as fd:
+            out.debug(f'file "{file}" valid')
     except:
-        out.error(f"cannot open file \"{file}\"")
+        out.error(f'cannot open file "{file}"')
     return True
 
 
-def openf(file, mode='rb', debug=True):
+def openf(file, mode="rb", debug=True):
     try:
         fd = open(file, mode=mode)
         if debug:
-            out.debug(f"file \"{file}\" valid")
+            out.debug(f'file "{file}" valid')
         return fd
     except:
-        out.error(f"cannot open file \"{file}\"")
+        out.error(f'cannot open file "{file}"')
 
 
 def closef(fd):
@@ -40,8 +40,8 @@ def closef(fd):
 
 def writef(file, data, path=DOWNL_PATH):
     if type(data) is str:
-        data = data.encode('utf-8')
-    with openf(path + file, mode='wb') as fd:
+        data = data.encode("utf-8")
+    with openf(path + file, mode="wb") as fd:
         fd.write(data)
 
 
