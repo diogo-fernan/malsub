@@ -45,7 +45,7 @@ class MWDB(Service):
             raise HTTPError(e)
 
         # The first request returns JWT token.
-        # Now we can fetch the file the file.
+        # Now we can fetch the file.
         token = json.loads(data)["token"]
         del self.api_dowf.header["Authorization"]
         self.api_dowf.param = {"token": token}
