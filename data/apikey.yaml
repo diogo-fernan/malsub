@@ -45,4 +45,7 @@ ThreatStream:
 Triage:
     apikey:
         apikey: <apikey>
+MWDB:
+    apikey:
+        apikey: <apikey>
 ... # end of API keys
