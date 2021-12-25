@@ -17,7 +17,7 @@ def trunc(string, width=None, sep=" (...) "):
     return string[:dif1] + sep + ("", string[-dif2:])[dif2 > 0]
 
 
-def hexdump(byte, offset=0x00, sep=".", width=16):
+def hexdump(byte, offset=0x00, sep='.', width=16):
     from string import printable
 
     byte = bytearray(byte)
@@ -36,7 +36,7 @@ def hexdump(byte, offset=0x00, sep=".", width=16):
 
 
 def asciibin(string):
-    return " ".join("{:08b}".format(ord(i), "b") for i in string)
+    return " ".join("{:08b}".format(ord(i), 'b') for i in string)
 
 
 def rand01():
@@ -53,7 +53,7 @@ def randc(min, max):
     from struct import Struct
     from random import randint
 
-    imax = 2 ** (Struct("i").size * 8 - 1) - 1
+    imax = 2 ** (Struct('i').size * 8 - 1) - 1
     return min + randint(0, imax) % (max - min + 1)
 
 

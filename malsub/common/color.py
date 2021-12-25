@@ -34,7 +34,9 @@ def color(string, color, bold=False, underline=False):
         bu = code.bold
     elif underline:
         bu = code.underline
-    return f"{asciic.esc}" f"[{bu};{color}m{string}{asciic.esc}" f"[{code.end}m"
+    return f"{asciic.esc}" \
+           f"[{bu};{color}m{string}{asciic.esc}" \
+           f"[{code.end}m"  # fmt: skip
 
 
 def bold(string):

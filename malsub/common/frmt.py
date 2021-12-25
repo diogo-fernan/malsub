@@ -19,7 +19,7 @@ def jsonhoriz(json):
 def jsonvert(json):
     tree = _jsonload(json)
     rows = [[k, tree[k]] for k in tree]
-    header = [f"column ({len([i for i in rows])})"] + ["value"]  # * _depth(tree)
+    header = [f"column ({len([i for i in rows])})"] + ["value"]
     return AsciiTable([header, *rows]).table
 
 
