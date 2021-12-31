@@ -15,10 +15,12 @@ __sha1 = 160
 __sha256 = 256
 __sha512 = 512
 
-__hash = {__md5: HASH_MD5,
-          __sha1: HASH_SHA1,
-          __sha256: HASH_SHA256,
-          __sha512: HASH_SHA512}
+__hash = {
+    __md5: HASH_MD5,
+    __sha1: HASH_SHA1,
+    __sha256: HASH_SHA256,
+    __sha512: HASH_SHA512,
+}
 
 
 class Hash:
@@ -56,7 +58,8 @@ def hashf(alg, file):
     h = new(alg)
     while True:
         data = fd.read(__buf)
-        if not data: break
+        if not data:
+            break
         h.update(data)  # bytearray(data, 'utf-8')
     hex = h.hexdigest().lower()
     rw.closef(input)

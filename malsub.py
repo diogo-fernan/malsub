@@ -74,36 +74,3 @@ from malsub.core import main
 
 if __name__ == "__main__":
     exit(main.run(docopt(__doc__), printable_usage(__doc__)))
-
-
-# https://malwareconfig.com/api/
-# http://www.cryptam.com/
-# https://github.com/mwtracker/cryptam_tools
-
-
-# notes
-# pyflakes, pylint, pychecker, and pep8
-# CONTRIBUTING.md
-
-# -b
-# open URLs in the browser
-
-# make groups
-# -g mal
-# -g intel
-# -g url
-# relative/full path for data/ and downl/
-
-# password-protected samples
-# compression
-
-# read file or files from pipe? stdin
-# find malware_samples/ -exec cat {} \; | malsub
-
-# interactive console
-# history of commands and output
-# cache stuff
-# submit a sample
-# get report minutes later just by issuing "check"
-
-# pip3.6 freeze > requirements.txt

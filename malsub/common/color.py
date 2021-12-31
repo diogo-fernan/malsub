@@ -11,6 +11,7 @@ class code:
     """
     styles and bright foreground colors
     """
+
     end = 0
     bold = 1
     underline = 4
@@ -33,12 +34,9 @@ def color(string, color, bold=False, underline=False):
         bu = code.bold
     elif underline:
         bu = code.underline
-    # return f"{asciic.soh+asciic.esc}" \
-    # 	   f"[{bu};{c}m{asciic.sot}{s}{asciic.soh+asciic.esc}" \
-    # 	   f"[{code.end}m{asciic.sot}"
     return f"{asciic.esc}" \
            f"[{bu};{color}m{string}{asciic.esc}" \
-           f"[{code.end}m"
+           f"[{code.end}m"  # fmt: skip
 
 
 def bold(string):

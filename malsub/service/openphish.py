@@ -1,7 +1,7 @@
 from malsub.service.base import APISpec, Service
 from malsub.core.type import File, Hash
-from malsub.core.web import request, openurl
-from malsub.common import out, rw, frmt
+from malsub.core.web import request
+from malsub.common import rw
 
 
 class OpenPhish(Service):
@@ -9,12 +9,13 @@ class OpenPhish(Service):
     sname = "op"
     api_keyl = 0
 
-    desc = f"{name} is a proprietary phishing threat intelligence source that\n" \
-           f"uses artificial intelligence for automated classification"
+    desc = (
+        f"{name} is a proprietary phishing threat intelligence source that\n"
+        f"uses artificial intelligence for automated classification"
+    )
     subs = "public/private"
     url = "https://openphish.com/"
 
-    # api_dowf = APISpec("GET", "https://openphish.com", "/prvt-intell/")
     api_dowf = APISpec("GET", "https://openphish.com", "/feed.txt")
     api_repf = APISpec()
     api_subf = APISpec()
@@ -32,10 +33,9 @@ class OpenPhish(Service):
     # https://openphish.com/
 
     def download_file(self, hash: Hash):
-        # self.api_dowf.fulluri = self.api_dowf.url + "/feed.txt"
         data, filename = request(self.api_dowf)
         rw.writef("openphish-community.txt", data)
-        return "downloaded \"openphish-community.txt\""
+        return 'downloaded "openphish-community.txt"'
 
     @Service.unsupported
     def report_file(self, hash: Hash):

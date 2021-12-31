@@ -2,8 +2,7 @@ from malsub.common import out, rw, util
 from malsub.core import ascii, crypto, file, meta, serv, web
 from malsub.service import base
 
-# __NOINPUT = '\u2013'  # en-dash
-__NOINPUT = '\u2014'  # em-dash
+__NOINPUT = "\u2014"  # em-dash
 
 anserv = []
 iarg = []
@@ -12,9 +11,15 @@ pause = 0
 
 def run(arg, usage):
     def inarg():
-        if (arg["--ipaddr"] or arg["--domain"] or arg["--appl"] or arg["--url"]) \
-                and not (arg["--download"] or arg["--find"] or arg["--find"]
-                         or arg["--report"] or arg["--submit"]):
+        if (
+            arg["--ipaddr"] or arg["--domain"] or arg["--appl"] or arg["--url"]
+        ) and not (
+            arg["--download"]
+            or arg["--find"]
+            or arg["--find"]
+            or arg["--report"]
+            or arg["--submit"]
+        ):
             print(usage)
             exit(0)
 
@@ -24,8 +29,10 @@ def run(arg, usage):
             if int(pause) < 0:
                 raise ValueError
         except ValueError:
-            out.warn(f"invalid pause interval integer value \"{pause}\", "
-                     f"defaulting to zero")
+            out.warn(
+                f'invalid pause interval integer value "{pause}", '
+                f"defaulting to zero"
+            )
             pause = 0
 
         if arg["--test"]:
@@ -58,11 +65,12 @@ def run(arg, usage):
                 if arg["--recursive"]:
                     tmp = [f for f in arg["<input>"] if isfile(f)]
                     for f in [normpath(f) for f in arg["<input>"] if isdir(f)]:
-                        tmp += [f for f in
-                                glob(f + meta.SEP + "**", recursive=True) if
-                                isfile(f)]
-                    tmp += [h for h in arg["<input>"] if
-                            not isfile(h) and not isdir(h)]
+                        tmp += [
+                            f
+                            for f in glob(f + meta.SEP + "**", recursive=True)
+                            if isfile(f)
+                        ]
+                    tmp += [h for h in arg["<input>"] if not isfile(h) and not isdir(h)]
                     arg["<input>"] = tmp
 
                 if arg["--submit"]:
@@ -80,19 +88,19 @@ def run(arg, usage):
                         iarg = __NOINPUT
         out.debug("iarg", obj=iarg)
 
-        if iarg != __NOINPUT and \
-                not arg["--test"] and len(iarg) != len(arg["<input>"]):
+        if iarg != __NOINPUT and not arg["--test"] and len(iarg) != len(arg["<input>"]):
             rw.yn("one or more input arguments are invalid")
 
     def loadserv():
         from malsub.service import serv as _serv
+
         global anserv
 
         out.debug("_serv", obj=_serv)
         if arg["--analysis"].lower() != "all":
             from re import findall
-            anserv = [s for s in
-                      list(findall(r"[\w-]+", arg["--analysis"].lower()))]
+
+            anserv = [s for s in list(findall(r"[\w-]+", arg["--analysis"].lower()))]
             notanserv = [s[1:] for s in anserv if s.startswith("-")]
             if "all" in anserv:
                 anserv = [s for s in _serv if s not in notanserv]
@@ -110,26 +118,37 @@ def run(arg, usage):
     def loadkey():
         from yaml import safe_load as loadyaml
         from yaml.scanner import ScannerError
+
         global anserv
 
         try:
-            apikey = {n.lower(): k for n, k in
-                      loadyaml(open(meta.APIKEY_PATH)).items() if
-                      n.lower() in anserv}
+            apikey = {
+                n.lower(): k
+                for n, k in loadyaml(open(meta.APIKEY_PATH)).items()
+                if n.lower() in anserv
+            }
         except IOError as e:
-            out.error(f"cannot open API keys file \"{meta.APIKEY_PATH}\": {e}")
+            out.error(f'cannot open API keys file "{meta.APIKEY_PATH}": {e}')
         except ScannerError as e:
-            out.error(f"cannot load API keys file \"{meta.APIKEY_PATH}\": {e}")
+            out.error(f'cannot load API keys file "{meta.APIKEY_PATH}": {e}')
         else:
             for n, k in apikey.items():
                 if type(k) is not dict:
-                    out.error(f"service \"{anserv[n].name}\" missing a valid API key \"{k}\"")
+                    out.error(
+                        f'service "{anserv[n].name}" missing a valid API key "{k}"'
+                    )
                 elif k.get("apikey") is None:
-                    out.error(f"service \"{anserv[n].name}\" missing a valid API key \"{k}\"")
+                    out.error(
+                        f'service "{anserv[n].name}" missing a valid API key "{k}"'
+                    )
                 elif k.get("apikey") == "":
-                    out.error(f"service \"{anserv[n].name}\" missing a valid API key \"{k}\"")
+                    out.error(
+                        f'service "{anserv[n].name}" missing a valid API key "{k}"'
+                    )
                 elif k.get("apikey").get("api_key") == "<apikey>":
-                    out.error(f"service \"{anserv[n].name}\" missing a valid API key \"{k}\"")
+                    out.error(
+                        f'service "{anserv[n].name}" missing a valid API key "{k}"'
+                    )
                 else:
                     anserv[n].set_apikey(k)
             out.debug("apikey", obj=apikey)
@@ -146,6 +165,7 @@ def run(arg, usage):
     ascii.banner()
 
     from malsub.common import frmt
+
     if arg["--servhelp"]:
         header = ["service", "description", "subscription", "url", "api"]
         summ = []
@@ -213,7 +233,9 @@ def run(arg, usage):
         file.close(iarg)
 
         header = ["#", "input"] + [s.obj.name for s in anserv]
-        out.verb(f"{meta.MALSUB_NAME} finished with results:\n"
-                 f"{frmt.tablevert(header, summ)}")
+        out.verb(
+            f"{meta.MALSUB_NAME} finished with results:\n"
+            f"{frmt.tablevert(header, summ)}"
+        )
 
     return

@@ -29,9 +29,8 @@ def time():
     """
     formats the current time down to microsecond resolution with timezone information
     """
-    # from time import localtime, strftime
     from datetime import datetime
-    # + strftime("%z %Z", localtime())
+
     return datetime.utcnow().strftime("%a %d %b %Y %H:%M:%S.%f +0000 UTC")
 
 
@@ -39,10 +38,9 @@ def msg(m, symb, lvl, c, cbu, file=stdout, trail="", end="\n"):
     """
     prints the current time and a colored message
     """
-    if trail: trail = ", " + trail
-    # n = 55
-    print(f"{c(symb)} {cbu(lvl):>18} {time()}{cbu(':')} {m}{trail}", file=file,
-          end=end)
+    if trail:
+        trail = ", " + trail
+    print(f"{c(symb)} {cbu(lvl):>18} {time()}{cbu(':')} {m}{trail}", file=file, end=end)
 
 
 def pformat(obj):
@@ -70,7 +68,6 @@ def debug(m, obj=None):
     """
 
     def wrap(obj):
-        # if type(obj.__repr__()) is str:
         if isinstance(obj.__repr__(), str):
             return obj
         else:

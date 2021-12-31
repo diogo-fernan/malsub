@@ -13,10 +13,11 @@ class MalShare(Service):
     subs = "public"
     url = "http://malshare.com/"
 
-    # api_dowf = APISpec("GET", "https://malshare.com", "/api.php", "malshare-bundle.pem")
     api_dowf = APISpec("GET", "https://malshare.com", "/api.php", cert=True)
     api_repf = APISpec("GET", "https://malshare.com", "/api.php", cert=True)
-    api_subf = APISpec("POST", "https://malshare.com", "/api.php?action=upload&api_key=%s", cert=True)
+    api_subf = APISpec(
+        "POST", "https://malshare.com", "/api.php?action=upload&api_key=%s", cert=True
+    )
 
     api_repa = APISpec()
     api_repd = APISpec()
@@ -25,37 +26,43 @@ class MalShare(Service):
     api_repu = APISpec()
     api_subu = APISpec()
 
-    api_srch = APISpec("GET", "https://malshare.com", "/api.php?api_key=%s&action=details&hash=%s", cert=True)
+    api_srch = APISpec(
+        "GET",
+        "https://malshare.com",
+        "/api.php?api_key=%s&action=details&hash=%s",
+        cert=True,
+    )
     api_quot = APISpec()
 
     # https://malshare.com/doc.php
 
     def download_file(self, hash: Hash):
-        self.api_dowf.param = {**self.get_apikey(), "action": "getfile",
-                               "hash": hash.hash}
+        self.api_dowf.param = {
+            **self.get_apikey(),
+            "action": "getfile",
+            "hash": hash.hash,
+        }
         data, filename = request(self.api_dowf, bin=True)
-        # out.debug(util.hexdump(data))
         if data.startswith(b"Sample not found by hash"):
-            return f"sample \"{hash}\" not found"
+            return f'sample "{hash}" not found'
         if not filename:
             filename = hash.hash
         rw.writef(filename, data)
-        return f"downloaded \"{filename}\""
+        return f'downloaded "{filename}"'
 
     def report_file(self, hash: Hash):
-        self.api_repf.param = {**self.get_apikey(), "action": "details",
-                               "hash": hash.hash}
+        self.api_repf.param = {
+            **self.get_apikey(),
+            "action": "details",
+            "hash": hash.hash,
+        }
         data, _ = request(self.api_repf)
-        #data = frmt.jsontree(data)
         data = frmt.jsondump(data)
         return data
 
-
     def submit_file(self, file: File):
         self.api_subf.fulluri = self.api_subf.fullurl % (self.get_apikey(key=True))
-        self.api_subf.file = {
-            "upload": file.fd()
-        } 
+        self.api_subf.file = {"upload": file.fd()}
         data, _ = request(self.api_subf)
         return data
 
@@ -80,9 +87,11 @@ class MalShare(Service):
         pass
 
     def search(self, srch: str):
-        self.api_srch.fulluri = self.api_srch.fullurl % (self.get_apikey(key=True), srch)
+        self.api_srch.fulluri = self.api_srch.fullurl % (
+            self.get_apikey(key=True),
+            srch,
+        )
         data, _ = request(self.api_srch)
-        #data = frmt.jsontree(data)
         data = frmt.jsondump(data)
         return data
 

@@ -9,13 +9,14 @@ class Metadefender(Service):
     sname = "md"
     api_keyl = 32
 
-    desc = f"{name} is a proprietary multi-scanning engine for malware,\n" \
-           f"applications and IP addresses belonging to OPSWAT"
+    desc = (
+        f"{name} is a proprietary multi-scanning engine for malware,\n"
+        f"applications and IP addresses belonging to OPSWAT"
+    )
     subs = "public/private"
     url = "https://www.metadefender.com/"
 
     api_dowf = APISpec()
-    # api_repf = APISpec("GET", "https://api.metadefender.com", "/v2/file/")
     api_repf = APISpec("GET", "https://api.metadefender.com", "/v2/hash/")
     api_subf = APISpec("POST", "https://scan.metadefender.com", "/v2/file")
 
@@ -50,9 +51,11 @@ class Metadefender(Service):
         return data
 
     def report_app(self, hash: Hash):
-        self.api_repa.header = \
-            {"Authorization":
-                 " ".join(f"{kn} {k}" for kn, k in self.get_apikey().items())}
+        self.api_repa.header = {
+            "Authorization": " ".join(
+                f"{kn} {k}" for kn, k in self.get_apikey().items()
+            )
+        }
         self.api_repa.fulluri = self.api_repa.fullurl + hash.hash
         data, _ = request(self.api_repa)
         data = frmt.jsondump(data)
@@ -64,8 +67,10 @@ class Metadefender(Service):
 
     def report_ip(self, ip: str):
         self.api_repi.header = {
-            "Authorization":
-                " ".join(f"{kn} {k}" for kn, k in self.get_apikey().items())}
+            "Authorization": " ".join(
+                f"{kn} {k}" for kn, k in self.get_apikey().items()
+            )
+        }
         self.api_repi.fulluri = self.api_repi.fullurl + ip
         data, _ = request(self.api_repi)
         data = frmt.jsondump(data)
