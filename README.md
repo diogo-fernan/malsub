@@ -218,6 +218,23 @@ for h in hashes:
     vt.download_file(h)
 ```
 
+# Docker support
+
+You can run easily malsub in a container by using the supplied `Dockerfile`.
+First build the container:
+
+```
+$ sudo docker build -t malsub . 
+```
+
+Then run it with the proper command:
+
+```bash
+$ sudo docker run --rm -it -v ${PWD}/downl:/app/downl malsub -a urlhaus -r 4293c1d8574dc87c58360d6bac3daa182f64f7785c9d41da5e0741d2b1817fc7
+```
+
+We created a volume mounting of the `downl` folder, so any download operation will will copy the file outside of the container.
+
 # Future Work
 
 * Documentation;
