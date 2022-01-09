@@ -25,6 +25,8 @@ The following services are currently included in *malsub*:
 * [JoeSandbox](https://www.joesandbox.com/);
 * [Triage](https://tria.ge/);
 * [MWDB](https://mwdb.cert.pl/);
+* [MalwareBazaar](https://bazaar.abuse.ch/);
+* [URLhaus](https://urlhaus.abuse.ch/);
 
 
 Most of these services require API keys that are generated after registering an account in their respective websites, which need to be specified in the `apikey.yaml` file according to the given structure. Note that some of the already bundled services are limited in supported operations due to the fact that they were developed with free API keys. API keys associated with paid subscriptions are allowed to make additional calls not open to the public and may not be restricted by a given quota. Yet, *malsub* can process multiple input arguments and pause between requests as a workaround for cooldown periods.
