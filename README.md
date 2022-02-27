@@ -9,25 +9,25 @@
 
 The following services are currently included in *malsub*:
 
+* [APIVoid](https://www.apivoid.com/);
+* [FileScan](https://www.filescan.io/);
 * [Have I been pwned?](https://haveibeenpwned.com/);
 * [Hybrid Analysis](https://www.hybrid-analysis.com/);
+* [JoeSandbox](https://www.joesandbox.com/);
 * [MalShare](https://malshare.com/);
 * [maltracker](https://maltracker.net/);
+* [MalwareBazaar](https://bazaar.abuse.ch/);
 * [Metadefender](https://www.metadefender.com/);
+* [MWDB](https://mwdb.cert.pl/);
 * [OpenPhish](https://openphish.com/);
 * [PhishTank](https://www.phishtank.com/);
 * [Safe Browsing](https://developers.google.com/safe-browsing/);
 * [Threat Crowd](https://www.threatcrowd.org/);
 * [ThreatStream](https://www.anomali.com/platform/threatstream);
-* [APIVoid](https://www.apivoid.com/);
-* [VirusTotal](https://www.virustotal.com/);
-* [VxStream](https://www.vxstream-sandbox.com/);
-* [JoeSandbox](https://www.joesandbox.com/);
 * [Triage](https://tria.ge/);
-* [MWDB](https://mwdb.cert.pl/);
-* [MalwareBazaar](https://bazaar.abuse.ch/);
 * [URLhaus](https://urlhaus.abuse.ch/);
-
+* [VirusTotal](https://www.virustotal.com/);
+* [VxStream](https://www.vxstream-sandbox.com/).
 
 Most of these services require API keys that are generated after registering an account in their respective websites, which need to be specified in the `apikey.yaml` file according to the given structure. Note that some of the already bundled services are limited in supported operations due to the fact that they were developed with free API keys. API keys associated with paid subscriptions are allowed to make additional calls not open to the public and may not be restricted by a given quota. Yet, *malsub* can process multiple input arguments and pause between requests as a workaround for cooldown periods.
 
@@ -220,7 +220,7 @@ for h in hashes:
     vt.download_file(h)
 ```
 
-# Docker support
+# Docker Support
 
 You can run easily malsub in a container by using the supplied `Dockerfile`.
 First build the container:
@@ -243,23 +243,7 @@ We created a volume mounting of the `downl` folder, so any download operation wi
 * Refine error handling and data display of API responses, namely the summarization of multiple requests;
 * Extend supported API functions;
 * Implement additional API services as modules;
-* Develop an interactive command-line interface;
-* Integrate with other frameworks like [Cuckoo](http://www.cuckoosandbox.org/) and [Viper](https://github.com/viper-framework/viper).
-
-# Change History
-
-* *malsub* **20190323**: v1.3, modularization support so that *malsub* can be used as simple module ([#17](https://github.com/diogo-fernan/malsub/pull/17));
-* *malsub* **20190822**: migrated URLVoid to APIVoid (vendor migrated API);
-* *malsub* **20190820**: bug fixes;
-* *malsub* **20170907**: improved the VirusTotal and VxStream modules;
-* *malsub* **20170607**: added Have I been pwned? and Anomali ThreatStream as intelligence services, and added service exclusion in `-a` with a dash prefix (*e.g.*, `-a all,-ha` excludes Hybrid Analysis);
-* *malsub* **20170329**: added `-H` to output help information about services, fixed AVCaesar, modified URLVoid and made other improvements;
-* *malsub* **20170319**: made generic improvements, added files as input for report retrieval, added a recurse option and added VxStream (private version of Hybrid Analysis) as a service module;
-* *malsub* **20170305**: first major release.
-
-# Acknowledgments
-
-Thanks to Payload Security for kindly providing access to VxStream.
+* Develop an interactive command-line interface.
 
 # Author
 
