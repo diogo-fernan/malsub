@@ -7,6 +7,12 @@
 #    user: optional entry of the user pair
 #        term: user
 
+APIVoid:
+    apikey:
+        apikey: <apikey>
+FileScan:
+    apikey:
+        apikey: <apikey>
 HybridAnalysis:
     apikey:
         api-key: <apikey>
@@ -25,15 +31,15 @@ maltracker:
 Metadefender:
     apikey:
         apikey: <apikey>
+MWDB:
+    apikey:
+        apikey: <apikey>
 PhishTank:
     apikey:
         app_key: <apikey>
 SafeBrowsing:
     apikey:
         key: <apikey>
-APIVoid:
-    apikey:
-        apikey: <apikey>
 VirusTotal:
     apikey:
         apikey: <apikey>
@@ -45,7 +51,5 @@ ThreatStream:
 Triage:
     apikey:
         apikey: <apikey>
-MWDB:
-    apikey:
-        apikey: <apikey>
+
 ... # end of API keys
